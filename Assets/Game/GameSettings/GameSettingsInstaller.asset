@@ -15,3 +15,6 @@ MonoBehaviour:
   gridSettings:
     horizontalGridSize: 5
     verticalGridSize: 5
+    isDebugViewActive: 1
+    cellScale: 0.8
+    topMargin: 0

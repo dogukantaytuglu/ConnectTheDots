@@ -7,12 +7,29 @@ namespace Game.Features.Grid.Scripts.GridCell
     {
         [SerializeField] private GameObject viewContainer;
         [SerializeField] private TextMeshPro debugText;
-        
-        public void SetActivate(bool value)
+
+        public void Initialize(bool isActive, Vector2 coordinates)
         {
-            viewContainer.SetActive(value);
-            var position = transform.position;
-            debugText.text = $"{position.x}, {position.y}";
+            if (isActive)
+            {
+                Activate(coordinates);
+            }
+
+            else
+            {
+                Deactivate();
+            }
+        }
+        
+        private void Activate(Vector2 position)
+        {
+            debugText.text = $"{position.x},{position.y}";
+            viewContainer.SetActive(true);
+        }
+        
+        private void Deactivate()
+        {
+            viewContainer.SetActive(false);
         }
     }
 }

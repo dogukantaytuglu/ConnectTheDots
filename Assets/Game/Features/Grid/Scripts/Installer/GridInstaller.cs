@@ -10,7 +10,7 @@ namespace Game.Features.Grid.Scripts.Installer
         [SerializeField] private GridCellEntity gridCellEntityPrefab;
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<GridController>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<GridGenerator>().AsSingle().NonLazy();
             Container.BindFactory<GridCellEntity, GridCellFactory>().FromComponentInNewPrefab(gridCellEntityPrefab).UnderTransformGroup("CellEntities");
         }
     }
