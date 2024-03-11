@@ -1,4 +1,4 @@
-using Game.Features.Grid.Scripts.Data;
+using Game.Features.Dot.Scripts.Dot;
 using Game.Features.Grid.Scripts.Settings;
 using Game.Features.Grid.Scripts.Systems;
 using UnityEngine;
@@ -8,12 +8,14 @@ namespace Game.Features.Grid.Scripts.GridCell
 {
     public class GridCellEntity : MonoBehaviour
     {
-        public GridCellState GridCellState { get; private set; }
+        public bool IsGridCellFree => _registeredDot == null;
+        
         private GridCellDebugView _debugView;
-        private bool _isDebugViewActive;
-        private Vector2 _gridCoordinates = Vector2.zero;
         private GridController _gridController;
         private GridSettings _gridSettings;
+        private bool _isDebugViewActive;
+        private Vector2 _gridCoordinates = Vector2.zero;
+        private IDotOnGrid _registeredDot;
 
         [Inject]
         public void Construct(GridSettings gridSettings, GridCellDebugView gridCellDebugView, GridController gridController)
@@ -22,16 +24,13 @@ namespace Game.Features.Grid.Scripts.GridCell
             _debugView = gridCellDebugView;
             _gridController = gridController;
         }
-        
-        public void Awake()
-        {
-            _isDebugViewActive= _gridSettings.IsDebugViewActive;
-            transform.localScale = Vector3.one * _gridSettings.CellScale;
-            _gridController.Register(this);
-        }
 
         public void Initialize(Vector2 position, Vector2 coordinates)
         {
+            _isDebugViewActive= _gridSettings.IsDebugViewActive;
+            transform.localScale = Vector3.one * _gridSettings.CellScale;
+            _gridController.RegisterGridCell(this);
+            
             SetPosition(position);
             SetGridCoordinates(coordinates);
         }
@@ -52,6 +51,16 @@ namespace Game.Features.Grid.Scripts.GridCell
 
             gameObject.name = $"GridCell: {_gridCoordinates}";
             _debugView.Initialize(_isDebugViewActive, _gridCoordinates);
+        }
+
+        public void RegisterDot(IDotOnGrid dotToRegister)
+        {
+            _registeredDot = dotToRegister;
+        }
+
+        public void DeregisterDot()
+        {
+            _registeredDot = null;
         }
     }
 }

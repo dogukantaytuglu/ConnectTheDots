@@ -5,10 +5,10 @@ using Zenject;
 
 namespace Game.Features.Dot.Scripts.Dot
 {
-    public class DotEntity : MonoBehaviour
+    public class DotEntity : MonoBehaviour, IDotOnGrid
     {
         public int CurrentValue { get; private set; }
-        
+
         [SerializeField] private GameObject innerRingGameObject;
         [SerializeField] private SpriteRenderer dotColorSprite;
 
