@@ -311,6 +311,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4063122223864931865}
   - component: {fileID: 5645460284282004067}
+  - component: {fileID: 3660958074490852357}
   m_Layer: 0
   m_Name: GridCellEntity
   m_TagString: Untagged
@@ -346,7 +347,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ee1c9a3a49c47e38998682986b48901, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _debugView: {fileID: 3006902023921661671}
+--- !u!114 &3660958074490852357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7489827192395725636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0166d8ff8d905b048b2448179e1f5d11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _components:
+  - {fileID: 5645460284282004067}
+  - {fileID: 3006902023921661671}
+  _identifier: 
+  _useSceneContext: 0
+  _context: {fileID: 0}
+  _bindType: 0
 --- !u!1 &8857055059058459464
 GameObject:
   m_ObjectHideFlags: 0

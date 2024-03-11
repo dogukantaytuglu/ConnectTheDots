@@ -1,4 +1,6 @@
 using Game.Features.Grid.Scripts.GridCell;
+using Game.Features.Grid.Scripts.Settings;
+using Game.Features.Grid.Scripts.Systems;
 using UnityEngine;
 using Zenject;
 
@@ -8,10 +10,11 @@ namespace Game.Features.Grid.Scripts.Installer
     public class GridInstaller : ScriptableObjectInstaller<GridInstaller>
     {
         [SerializeField] private GridCellEntity gridCellEntityPrefab;
+        [Inject] private GridSettings _gridSettings;
         public override void InstallBindings()
         {
             Container.BindInterfacesAndSelfTo<GridGenerator>().AsSingle().NonLazy();
-            Container.BindFactory<GridCellEntity, GridCellFactory>().FromComponentInNewPrefab(gridCellEntityPrefab).UnderTransformGroup("CellEntities");
+            Container.BindFactory<GridCellEntity, GridCellFactory>().FromSubContainerResolve().ByNewPrefabInstaller<GridCellInstaller>(gridCellEntityPrefab).UnderTransformGroup(_gridSettings.ParentName);
         }
     }
 }

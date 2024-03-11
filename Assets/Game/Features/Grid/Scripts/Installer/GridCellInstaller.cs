@@ -1,4 +1,3 @@
-using Game.Features.Grid.Scripts.GridCell;
 using Zenject;
 
 namespace Game.Features.Grid.Scripts.Installer
@@ -7,7 +6,6 @@ namespace Game.Features.Grid.Scripts.Installer
     {
         public override void InstallBindings()
         {
-            Container.Bind<GridCellDebugView>().AsSingle().NonLazy();
         }
     }
 }

@@ -1,9 +1,9 @@
 using Game.Features.Grid.Scripts.GridCell;
-using Game.GameSettings.Scripts;
+using Game.Features.Grid.Scripts.Settings;
 using UnityEngine;
 using Zenject;
 
-namespace Game.Features.Grid.Scripts
+namespace Game.Features.Grid.Scripts.Systems
 {
     public class GridGenerator : IInitializable
     {
@@ -29,10 +29,7 @@ namespace Game.Features.Grid.Scripts
 
         private void GenerateGridCells()
         {
-            var xInitPosition = (_horizontalSize - 1) * -(_cellScale * 0.5f);
-            var yInitPosition = (_verticalSize - 1) * -(_cellScale * 0.5f) - _topMargin;
-
-            var initPosition = new Vector2(xInitPosition, yInitPosition);
+            var initPosition = CalculateInitPosition();
             var targetPosition = initPosition;
 
             for (var i = 0; i < _horizontalSize; i++)
@@ -47,6 +44,15 @@ namespace Game.Features.Grid.Scripts
                     gridCell.SetGridCoordinates(i, j);
                 }
             }
+        }
+
+        private Vector2 CalculateInitPosition()
+        {
+            var xInitPosition = (_horizontalSize - 1) * -(_cellScale * 0.5f);
+            var yInitPosition = (_verticalSize - 1) * -(_cellScale * 0.5f) - _topMargin;
+
+            var initPosition = new Vector2(xInitPosition, yInitPosition);
+            return initPosition;
         }
     }
 }
