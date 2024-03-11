@@ -46,8 +46,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 115aa3f83e1376c4eac92e1eb9a72035, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  innerRingGameObject: {fileID: 4591001013901918175}
-  dotColorSprite: {fileID: 5016738998514229613}
 --- !u!114 &-7309969212969493455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,6 +60,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _components:
   - {fileID: 7276209561937100891}
+  - {fileID: 4397860234169971151}
   _identifier: 
   _useSceneContext: 0
   _context: {fileID: 0}
@@ -158,6 +157,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2081146838477298305}
+  - component: {fileID: 4397860234169971151}
   - component: {fileID: 5016738998514229613}
   m_Layer: 0
   m_Name: Visual
@@ -183,6 +183,21 @@ Transform:
   - {fileID: 5760842055753844080}
   m_Father: {fileID: 4495959099646540201}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4397860234169971151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2459786364590889317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c2833ff7bfa47b8bb3c73f2f60167f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  innerRingGameObject: {fileID: 4591001013901918175}
+  dotColorSprite: {fileID: 5016738998514229613}
+  valueText: {fileID: 8593625938355694800}
 --- !u!212 &5016738998514229613
 SpriteRenderer:
   m_ObjectHideFlags: 0

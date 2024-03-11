@@ -10,8 +10,12 @@ namespace Game.Features.Dot.Scripts.Settings
     {
         public List<Color> DotColorPalette => dotColorPalette;
         public DotEntity DotPrefab => dotPrefab;
+        public List<int> StarterValues => starterValues;
+        public int DotVisualRingActivationThreshold => dotVisualRingActivationThreshold;
 
         [SerializeField] private List<Color> dotColorPalette;
+        [SerializeField] private List<int> starterValues;
         [SerializeField] private DotEntity dotPrefab;
+        [SerializeField] private int dotVisualRingActivationThreshold = 1024;
     }
 }
