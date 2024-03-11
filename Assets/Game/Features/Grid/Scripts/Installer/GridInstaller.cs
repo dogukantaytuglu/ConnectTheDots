@@ -9,12 +9,16 @@ namespace Game.Features.Grid.Scripts.Installer
     [CreateAssetMenu(fileName = "GridInstaller", menuName = "Installers/GridInstaller")]
     public class GridInstaller : ScriptableObjectInstaller<GridInstaller>
     {
-        [SerializeField] private GridCellEntity gridCellEntityPrefab;
         [Inject] private GridSettings _gridSettings;
         public override void InstallBindings()
         {
             Container.BindInterfacesAndSelfTo<GridGenerator>().AsSingle().NonLazy();
-            Container.BindFactory<GridCellEntity, GridCellFactory>().FromSubContainerResolve().ByNewPrefabInstaller<GridCellInstaller>(gridCellEntityPrefab).UnderTransformGroup(_gridSettings.ParentName);
+            Container.Bind<GridController>().AsSingle().NonLazy();
+            
+            Container.BindFactory<GridCellEntity, GridCellFactory>()
+                .FromSubContainerResolve()
+                .ByNewPrefabInstaller<GridCellInstaller>(_gridSettings.GridCellEntityPrefab)
+                .UnderTransformGroup(_gridSettings.ParentName);
         }
     }
 }

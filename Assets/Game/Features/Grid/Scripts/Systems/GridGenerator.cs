@@ -30,20 +30,28 @@ namespace Game.Features.Grid.Scripts.Systems
         private void GenerateGridCells()
         {
             var initPosition = CalculateInitPosition();
-            var targetPosition = initPosition;
+            var coordinates = Vector2.zero;
 
             for (var i = 0; i < _horizontalSize; i++)
             {
+                coordinates.x = i;
                 for (var j = 0; j < _verticalSize; j++)
                 {
-                    targetPosition.x = initPosition.x + i * _cellScale;
-                    targetPosition.y = initPosition.y + j * _cellScale;
+                    coordinates.y = j;
+                    var targetPosition = CalculateTargetPosition(initPosition, coordinates);
 
                     var gridCell = _gridCellFactory.Create();
-                    gridCell.SetPosition(targetPosition);
-                    gridCell.SetGridCoordinates(i, j);
+                    gridCell.Initialize(targetPosition, coordinates);
                 }
             }
+        }
+
+        private Vector2 CalculateTargetPosition(Vector2 initPosition, Vector2 coordinates)
+        {
+            Vector2 targetPosition;
+            targetPosition.x = initPosition.x + coordinates.x * _cellScale;
+            targetPosition.y = initPosition.y + coordinates.y * _cellScale;
+            return targetPosition;
         }
 
         private Vector2 CalculateInitPosition()

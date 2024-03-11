@@ -1,4 +1,5 @@
 using System;
+using Game.Features.Grid.Scripts.GridCell;
 using UnityEngine;
 
 namespace Game.Features.Grid.Scripts.Settings
@@ -12,6 +13,7 @@ namespace Game.Features.Grid.Scripts.Settings
         public float CellScale => cellScale;
         public float TopMargin => topMargin;
         public string ParentName => parentName;
+        public GridCellEntity GridCellEntityPrefab => gridCellEntityPrefab;
 
         [SerializeField] private int horizontalGridSize;
         [SerializeField] private int verticalGridSize;
@@ -19,5 +21,6 @@ namespace Game.Features.Grid.Scripts.Settings
         [SerializeField] private float cellScale;
         [SerializeField] private float topMargin;
         [SerializeField] private string parentName;
+        [SerializeField] private GridCellEntity gridCellEntityPrefab; 
     }
 }

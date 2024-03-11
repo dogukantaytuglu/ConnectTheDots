@@ -1,3 +1,5 @@
+using Game.Features.Dot.Scripts.Settings;
+using Game.Features.Grid.Scripts.Settings;
 using UnityEngine;
 using Zenject;
 
@@ -7,10 +9,12 @@ namespace Game.GameSettings.Scripts
     public class GameSettingsInstaller : ScriptableObjectInstaller<GameSettingsInstaller>
     {
         [SerializeField] private GridSettings gridSettings;
+        [SerializeField] private DotSettings dotSettings;
 
         public override void InstallBindings()
         {
             Container.BindInstance(gridSettings);
+            Container.BindInstance(dotSettings);
         }
     }
 }
