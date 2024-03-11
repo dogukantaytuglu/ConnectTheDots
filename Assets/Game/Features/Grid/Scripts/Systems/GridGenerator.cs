@@ -7,19 +7,15 @@ namespace Game.Features.Grid.Scripts.Systems
 {
     public class GridGenerator : IInitializable
     {
-        private int _horizontalSize;
-        private int _verticalSize;
-        private float _cellScale;
-        private float _topMargin;
-        private GridCellFactory _gridCellFactory;
+        private readonly GridCellFactory _gridCellFactory;
+        private readonly GridSettings _gridSettings;
+        private float HorizontalCellSize => _gridSettings.CellScale + _gridSettings.HorizontalSpaceBetweenCells;
+        private float VerticalCellSize => _gridSettings.CellScale + _gridSettings.VerticalSpaceBetweenCells;
 
         public GridGenerator(GridCellFactory gridCellFactory, GridSettings gridSettings)
         {
             _gridCellFactory = gridCellFactory;
-            _horizontalSize = gridSettings.HorizontalGridSize;
-            _verticalSize = gridSettings.VerticalGridSize;
-            _cellScale = gridSettings.CellScale;
-            _topMargin = gridSettings.TopMargin;
+            _gridSettings = gridSettings;
         }
 
         public void Initialize()
@@ -29,13 +25,15 @@ namespace Game.Features.Grid.Scripts.Systems
 
         private void GenerateGridCells()
         {
+            var horizontalSize = _gridSettings.HorizontalGridSize;
+            var verticalSize = _gridSettings.VerticalGridSize;
             var initPosition = CalculateInitPosition();
             var coordinates = Vector2.zero;
 
-            for (var i = 0; i < _horizontalSize; i++)
+            for (var i = 0; i < horizontalSize; i++)
             {
                 coordinates.x = i;
-                for (var j = 0; j < _verticalSize; j++)
+                for (var j = 0; j < verticalSize; j++)
                 {
                     coordinates.y = j;
                     var targetPosition = CalculateTargetPosition(initPosition, coordinates);
@@ -49,15 +47,19 @@ namespace Game.Features.Grid.Scripts.Systems
         private Vector2 CalculateTargetPosition(Vector2 initPosition, Vector2 coordinates)
         {
             Vector2 targetPosition;
-            targetPosition.x = initPosition.x + coordinates.x * _cellScale;
-            targetPosition.y = initPosition.y + coordinates.y * _cellScale;
+            targetPosition.x = initPosition.x + coordinates.x * HorizontalCellSize;
+            targetPosition.y = initPosition.y + coordinates.y * VerticalCellSize;
             return targetPosition;
         }
 
         private Vector2 CalculateInitPosition()
         {
-            var xInitPosition = (_horizontalSize - 1) * -(_cellScale * 0.5f);
-            var yInitPosition = (_verticalSize - 1) * -(_cellScale * 0.5f) - _topMargin;
+            var horizontalSize = _gridSettings.HorizontalGridSize;
+            var verticalSize = _gridSettings.VerticalGridSize;
+            var topMargin = _gridSettings.TopMargin;
+            
+            var xInitPosition = (horizontalSize - 1) * -(HorizontalCellSize * 0.5f);
+            var yInitPosition = (verticalSize - 1) * -(VerticalCellSize * 0.5f) - topMargin;
 
             var initPosition = new Vector2(xInitPosition, yInitPosition);
             return initPosition;

@@ -14,6 +14,8 @@ namespace Game.Features.Grid.Scripts.Settings
         public float TopMargin => topMargin;
         public string ParentName => parentName;
         public GridCellEntity GridCellEntityPrefab => gridCellEntityPrefab;
+        public float HorizontalSpaceBetweenCells => horizontalSpaceBetweenCells;
+        public float VerticalSpaceBetweenCells => verticalSpaceBetweenCells;
 
         [SerializeField] private int horizontalGridSize;
         [SerializeField] private int verticalGridSize;
@@ -21,6 +23,8 @@ namespace Game.Features.Grid.Scripts.Settings
         [SerializeField] private float cellScale;
         [SerializeField] private float topMargin;
         [SerializeField] private string parentName;
-        [SerializeField] private GridCellEntity gridCellEntityPrefab; 
+        [SerializeField] private GridCellEntity gridCellEntityPrefab;
+        [SerializeField] private float horizontalSpaceBetweenCells;
+        [SerializeField] private float verticalSpaceBetweenCells;
     }
 }
