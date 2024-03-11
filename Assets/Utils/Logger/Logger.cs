@@ -41,6 +41,11 @@ public static class Logger
 
         return name;
     }
+    
+    public static void TempLog(this object myObj, params object[] msg)
+    {
+        DoLog(Debug.Log, "", myObj, msg);
+    }
 
     public static void Log(this object myObj, params object[] msg)
     {
