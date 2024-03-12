@@ -1,10 +1,8 @@
 using System;
-using System.Linq;
 using DG.Tweening;
 using Game.Features.Dot.Scripts.Dot;
 using Game.Features.Dot.Scripts.Settings;
 using Game.Features.Dot.Scripts.Signals;
-using Game.Features.Input.Scripts.Signals;
 using Zenject;
 
 namespace Game.Features.Dot.Scripts.Systems
@@ -36,32 +34,38 @@ namespace Game.Features.Dot.Scripts.Systems
 
         private void TryMerge()
         {
-            if (_selectedDotEntities == null || _selectedDotEntities.Length < 2)
+            if (IsMergePossible())
             {
-                FireMergeCompleteSignal();
-                return;
-            }
-
-            int finalValue;
-            
-            if (_selectedDotEntities.Length < 4)
-            {
-                finalValue = _baseValue * 2;
+                MergeAllDotsToLastDot();
+                DOVirtual.DelayedCall(_dotSettings.MergeMovementDuration, FireMergeCompleteSignal);
             }
             
             else
             {
-                finalValue = _baseValue * 4;
+                FireMergeCompleteSignal();
             }
+        }
 
+        private bool IsMergePossible()
+        {
+            return _selectedDotEntities is { Length: > 1 };
+        }
+
+        private void MergeAllDotsToLastDot()
+        {
             var lastSelectedDotEntity = _selectedDotEntities[^1];
-            lastSelectedDotEntity.SetValue(finalValue);
+            lastSelectedDotEntity.SetValue(CalculateFinalValue());
             for (var i = 0; i < _selectedDotEntities.Length - 1; i++)
             {
                 _selectedDotEntities[i].MergeTo(lastSelectedDotEntity);
             }
+        }
 
-            DOVirtual.DelayedCall(_dotSettings.MergeMovementDuration, FireMergeCompleteSignal);
+        private int CalculateFinalValue()
+        {
+            var multiplier = _selectedDotEntities.Length < 4 ? 2 : 4;
+
+            return _baseValue * multiplier;
         }
 
         private void FireMergeCompleteSignal()
