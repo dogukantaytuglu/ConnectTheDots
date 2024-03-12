@@ -1,12 +1,12 @@
 using Game.Features.Dot.Scripts.Dot;
 using Game.Features.Dot.Scripts.Settings;
+using Game.Features.Grid.Scripts.GridCell;
 using Game.Features.Grid.Scripts.Systems;
 using UnityEngine;
-using Zenject;
 
 namespace Game.Features.Dot.Scripts.Systems
 {
-    public class DotSpawner: IInitializable
+    public class DotSpawner
     {
         private readonly GridController _gridController;
         private readonly DotFactory _dotFactory;
@@ -19,22 +19,22 @@ namespace Game.Features.Dot.Scripts.Systems
             _dotSettings = dotSettings;
         }
         
-        public void Initialize()
-        {
-            PopulateGridWithDots();
-        }
-        
-        private void PopulateGridWithDots()
+        public void PopulateGridWithDots()
         {
             while (_gridController.TryGetFreeCellEntity(out var freeCellEntity))
             {
-                var dotEntity = _dotFactory.Create();
-                dotEntity.transform.position = freeCellEntity.transform.position;
-                _gridController.RegisterDotToGridCell(freeCellEntity, dotEntity);
-                var starterValueList = _dotSettings.StarterValues;
-                var randomIndex = Random.Range(0, starterValueList.Count);
-                dotEntity.SetValue(starterValueList[randomIndex]);
+                SpawnDotEntityOnGridCell(freeCellEntity);
             }
+        }
+
+        private void SpawnDotEntityOnGridCell(GridCellEntity freeCellEntity)
+        {
+            var dotEntity = _dotFactory.Create();
+            dotEntity.transform.position = freeCellEntity.transform.position;
+            _gridController.RegisterDotToGridCell(freeCellEntity, dotEntity);
+            var starterValueList = _dotSettings.StarterValues;
+            var randomIndex = Random.Range(0, starterValueList.Count);
+            dotEntity.Initialize(starterValueList[randomIndex], freeCellEntity.GridCoordinates);
         }
     }
 }

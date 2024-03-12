@@ -10,10 +10,13 @@ public class DotInstaller : ScriptableObjectInstaller<DotInstaller>
     [Inject] private DotSettings _dotSettings;
     public override void InstallBindings()
     {
-        Container.BindInterfacesAndSelfTo<DotSpawner>().AsSingle().NonLazy();
+        Container.BindInterfacesAndSelfTo<DotInputHandler>().AsSingle().NonLazy();
+        Container.BindInterfacesAndSelfTo<DotController>().AsSingle().NonLazy();
+        Container.Bind<DotSpawner>().AsSingle().NonLazy();
         
         Container.BindFactory<DotEntity, DotFactory>()
             .FromSubContainerResolve()
-            .ByNewPrefabInstaller<DotEntityInstaller>(_dotSettings.DotPrefab);
+            .ByNewPrefabInstaller<DotEntityInstaller>(_dotSettings.DotPrefab)
+            .UnderTransformGroup(_dotSettings.SpawnParentName);
     }
 }

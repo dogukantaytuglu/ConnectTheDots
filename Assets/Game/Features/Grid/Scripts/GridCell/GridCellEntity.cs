@@ -9,6 +9,7 @@ namespace Game.Features.Grid.Scripts.GridCell
     public class GridCellEntity : MonoBehaviour
     {
         public bool IsGridCellFree => _registeredDot == null;
+        public Vector2 GridCoordinates => _gridCoordinates;
         
         private GridCellDebugView _debugView;
         private GridController _gridController;

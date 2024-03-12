@@ -1,3 +1,4 @@
+using Game.Features.Input.Scripts.Signals;
 using Game.Features.Input.Scripts.Systems;
 using UnityEngine;
 using Zenject;
@@ -8,5 +9,6 @@ public class InputSystemInstaller : ScriptableObjectInstaller<InputSystemInstall
     public override void InstallBindings()
     {
         Container.BindInterfacesAndSelfTo<PlayerInputSystem>().AsSingle().NonLazy();
+        Container.DeclareSignal<InputFingerDownSignal>();
     }
 }
