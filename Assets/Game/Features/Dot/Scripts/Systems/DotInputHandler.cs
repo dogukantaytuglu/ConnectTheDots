@@ -29,13 +29,6 @@ namespace Game.Features.Dot.Scripts.Systems
             _signalBus.Subscribe<InputFingerSignal>(HandleFingerMovement);
         }
 
-        public void Dispose()
-        {
-            _signalBus.Unsubscribe<InputFingerDownSignal>(HandleFingerDown);
-            _signalBus.Unsubscribe<InputFingerUpSignal>(HandleFingerUp);
-            _signalBus.Unsubscribe<InputFingerSignal>(HandleFingerMovement);
-        }
-
         private void HandleFingerMovement(InputFingerSignal signal)
         {
             if (_selectedDotList.Count < 1) return;
@@ -115,6 +108,13 @@ namespace Game.Features.Dot.Scripts.Systems
         private void FireSelectedDotListChangedSignal()
         {
             _signalBus.Fire(new SelectedDotListChangedSignal(_selectedDotList.ToArray()));
+        }
+        
+        public void Dispose()
+        {
+            _signalBus.Unsubscribe<InputFingerDownSignal>(HandleFingerDown);
+            _signalBus.Unsubscribe<InputFingerUpSignal>(HandleFingerUp);
+            _signalBus.Unsubscribe<InputFingerSignal>(HandleFingerMovement);
         }
     }
 }
