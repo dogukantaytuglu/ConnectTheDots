@@ -57,7 +57,7 @@ namespace Game.Features.Dot.Scripts.Systems
             }
 
             _selectedDotList.Clear();
-            _signalBus.Fire<SelectedDostListClearedSignal>();
+            _signalBus.Fire<SelectedDotsListClearedSignal>();
         }
 
         private void HandleFingerDown(InputFingerDownSignal fingerDownSignal)

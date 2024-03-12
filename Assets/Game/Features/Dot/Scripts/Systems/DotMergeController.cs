@@ -1,6 +1,10 @@
 using System;
+using System.Linq;
+using DG.Tweening;
 using Game.Features.Dot.Scripts.Dot;
+using Game.Features.Dot.Scripts.Settings;
 using Game.Features.Dot.Scripts.Signals;
+using Game.Features.Input.Scripts.Signals;
 using Zenject;
 
 namespace Game.Features.Dot.Scripts.Systems
@@ -8,18 +12,20 @@ namespace Game.Features.Dot.Scripts.Systems
     public class DotMergeController : IInitializable, IDisposable
     {
         private readonly SignalBus _signalBus;
+        private readonly DotSettings _dotSettings;
         private DotEntity[] _selectedDotEntities;
         private int _baseValue;
 
-        public DotMergeController(SignalBus signalBus)
+        public DotMergeController(SignalBus signalBus, DotSettings dotSettings)
         {
             _signalBus = signalBus;
+            _dotSettings = dotSettings;
         }
 
         public void Initialize()
         {
             _signalBus.Subscribe<SelectedDotListChangedSignal>(SaveSelectedDots);
-            _signalBus.Subscribe<SelectedDostListClearedSignal>(TryMerge);
+            _signalBus.Subscribe<SelectedDotsListClearedSignal>(TryMerge);
             _signalBus.Subscribe<FirstDotSelectedSignal>(SaveBaseValue);
         }
 
@@ -30,7 +36,11 @@ namespace Game.Features.Dot.Scripts.Systems
 
         private void TryMerge()
         {
-            if (_selectedDotEntities.Length < 2) return;
+            if (_selectedDotEntities == null || _selectedDotEntities.Length < 2)
+            {
+                FireMergeCompleteSignal();
+                return;
+            }
 
             int finalValue;
             
@@ -50,17 +60,27 @@ namespace Game.Features.Dot.Scripts.Systems
             {
                 _selectedDotEntities[i].MergeTo(lastSelectedDotEntity);
             }
+
+            DOVirtual.DelayedCall(_dotSettings.MergeMovementDuration, FireMergeCompleteSignal);
+        }
+
+        private void FireMergeCompleteSignal()
+        {
+            _signalBus.Fire<MergeCompleteSignal>();
+            _selectedDotEntities = null;
         }
 
         private void SaveSelectedDots(SelectedDotListChangedSignal signal)
         {
-            _selectedDotEntities = signal.DotEntities;
+            _selectedDotEntities = new DotEntity[signal.DotEntities.Length];
+            Array.Copy(signal.DotEntities, _selectedDotEntities, signal.DotEntities.Length);
         }
 
         public void Dispose()
         {
             _signalBus.Unsubscribe<SelectedDotListChangedSignal>(SaveSelectedDots);
-            _signalBus.Unsubscribe<SelectedDostListClearedSignal>(TryMerge);
+            _signalBus.Unsubscribe<SelectedDotsListClearedSignal>(TryMerge);
+            _signalBus.Unsubscribe<FirstDotSelectedSignal>(SaveBaseValue);
         }
     }
 }

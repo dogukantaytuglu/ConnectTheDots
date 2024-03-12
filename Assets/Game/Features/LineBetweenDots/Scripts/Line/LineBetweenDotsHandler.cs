@@ -24,7 +24,7 @@ namespace Game.Features.LineBetweenDots.Scripts.Line
         {
             _signalBus.Subscribe<SelectedDotListChangedSignal>(HandleSelectedDotsChanged);
             _signalBus.Subscribe<FirstDotSelectedSignal>(SetLineColor);
-            _signalBus.Subscribe<SelectedDostListClearedSignal>(ClearLines);
+            _signalBus.Subscribe<SelectedDotsListClearedSignal>(ClearLines);
         }
 
         private void ClearLines()

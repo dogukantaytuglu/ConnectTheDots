@@ -7,7 +7,7 @@ using Zenject;
 
 namespace Game.Features.Dot.Scripts.Dot
 {
-    public class DotEntity : MonoBehaviour, ILineBetweenDotsRoutePoint
+    public class DotEntity : MonoBehaviour, ILineBetweenDotsRoutePoint, IPoolable<IMemoryPool>
     {
         public int Value { get; private set; }
         public Vector2 DotCoordinate => _occupiedGridCellEntity.GridCoordinates;
@@ -18,6 +18,7 @@ namespace Game.Features.Dot.Scripts.Dot
         private DotController _dotController;
         private DotAnimationHandler _dotAnimationHandler;
         private GridCellEntity _occupiedGridCellEntity;
+        private IMemoryPool _pool;
 
         [Inject]
         public void Construct(DotController dotController, DotVisualHandler dotVisualHandler, DotAnimationHandler dotAnimationHandler)
@@ -60,13 +61,23 @@ namespace Game.Features.Dot.Scripts.Dot
         {
             var targetPosition = dotEntity.transform.position;
             targetPosition.z += 1;
-            _dotAnimationHandler.MoveToPosition(targetPosition).OnComplete(DestroyThisDotEntity);
+            _dotAnimationHandler.MoveToPosition(targetPosition).OnComplete(Despawn);
         }
 
-        private void DestroyThisDotEntity()
+        private void Despawn()
+        {
+            _pool.Despawn(this);
+        }
+
+        public void OnDespawned()
         {
             _dotController.DeregisterDotEntity(this);
-            Destroy(gameObject);
+            _pool = null;
+        }
+
+        public void OnSpawned(IMemoryPool pool)
+        {
+            _pool = pool;
         }
     }
 }

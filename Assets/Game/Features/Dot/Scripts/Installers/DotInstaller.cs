@@ -9,20 +9,24 @@ using Zenject;
 public class DotInstaller : ScriptableObjectInstaller<DotInstaller>
 {
     [Inject] private DotSettings _dotSettings;
+
     public override void InstallBindings()
     {
         Container.BindInterfacesAndSelfTo<DotInputHandler>().AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<DotController>().AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<DotMergeController>().AsSingle().NonLazy();
         Container.Bind<DotSpawner>().AsSingle().NonLazy();
-        
+
         Container.DeclareSignal<SelectedDotListChangedSignal>();
         Container.DeclareSignal<FirstDotSelectedSignal>();
-        Container.DeclareSignal<SelectedDostListClearedSignal>();
-        
+        Container.DeclareSignal<SelectedDotsListClearedSignal>();
+        Container.DeclareSignal<MergeCompleteSignal>();
+
         Container.BindFactory<DotEntity, DotFactory>()
-            .FromSubContainerResolve()
-            .ByNewPrefabInstaller<DotEntityInstaller>(_dotSettings.DotPrefab)
-            .UnderTransformGroup(_dotSettings.SpawnParentName);
+            .FromPoolableMemoryPool<DotEntity, DotPool>(poolBinder => poolBinder
+                .WithInitialSize(35)
+                .FromSubContainerResolve()
+                .ByNewPrefabInstaller<DotEntityInstaller>(_dotSettings.DotPrefab)
+                .UnderTransformGroup(_dotSettings.SpawnParentName));
     }
 }

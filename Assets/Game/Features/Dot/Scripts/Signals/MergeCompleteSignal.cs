@@ -1,6 +1,6 @@
 namespace Game.Features.Dot.Scripts.Signals
 {
-    public class SelectedDostListClearedSignal
+    public class MergeCompleteSignal
     {
         
     }
