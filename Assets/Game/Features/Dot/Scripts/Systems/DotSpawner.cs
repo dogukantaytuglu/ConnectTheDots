@@ -34,7 +34,7 @@ namespace Game.Features.Dot.Scripts.Systems
             _gridController.RegisterDotToGridCell(freeCellEntity, dotEntity);
             var starterValueList = _dotSettings.StarterValues;
             var randomIndex = Random.Range(0, starterValueList.Count);
-            dotEntity.Initialize(starterValueList[randomIndex], freeCellEntity.GridCoordinates);
+            dotEntity.Initialize(starterValueList[randomIndex], freeCellEntity);
         }
     }
 }

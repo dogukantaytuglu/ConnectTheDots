@@ -10,6 +10,7 @@ namespace Game.Features.Dot.Scripts.Systems
         private readonly DotSpawner _dotSpawner;
 
         private readonly Dictionary<Transform, DotEntity> _dotEntityTransformDictionary = new();
+        private readonly HashSet<DotEntity> _allDotEntities = new();
 
         public DotController(DotSpawner dotSpawner)
         {
@@ -23,6 +24,12 @@ namespace Game.Features.Dot.Scripts.Systems
 
         public void RegisterDotEntity(DotEntity dotEntity)
         {
+            if (!_allDotEntities.Add(dotEntity))
+            {
+                this.LogError($"{dotEntity.name} is trying to register itself multiple times");
+                return;
+            }
+            
             _dotEntityTransformDictionary.Add(dotEntity.transform, dotEntity);
         }
 
@@ -37,6 +44,17 @@ namespace Game.Features.Dot.Scripts.Systems
             }
 
             return false;
+        }
+        
+        public bool IsNeighbourDot(DotEntity originDot, DotEntity dotToCheck)
+        {
+            var originCoordinate = originDot.DotCoordinate;
+            var coordinateToCheck = dotToCheck.DotCoordinate;
+
+            var deltaX = Mathf.Abs(originCoordinate.x - coordinateToCheck.x);
+            var deltaY = Mathf.Abs(originCoordinate.y - coordinateToCheck.y);
+
+            return deltaX <= 1 && deltaY <= 1;
         }
     }
 }

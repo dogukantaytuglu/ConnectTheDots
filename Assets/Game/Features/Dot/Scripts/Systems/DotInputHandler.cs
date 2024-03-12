@@ -21,7 +21,6 @@ namespace Game.Features.Dot.Scripts.Systems
             _dotController = dotController;
         }
 
-
         public void Initialize()
         {
             _signalBus.Subscribe<InputFingerDownSignal>(HandleFingerDown);
@@ -39,14 +38,30 @@ namespace Game.Features.Dot.Scripts.Systems
         private void HandleFingerMovement(InputFingerSignal signal)
         {
             if (_selectedDotList.Count < 1) return;
-            var lastSelectedDotValue = _selectedDotList[^1].CurrentValue;
+            var lastSelectedDot = _selectedDotList[^1];
+            var lastSelectedDotValue = lastSelectedDot.CurrentValue;
             if (!TryGetDotEntityAtPosition(signal.InputPosition, out var dotEntity)) return;
+            if (TryDeselect(dotEntity)) return;
             if (dotEntity.CurrentValue != lastSelectedDotValue) return;
+            if (!_dotController.IsNeighbourDot(lastSelectedDot, dotEntity)) return;
 
-            dotEntity.GetSelected();
-            _selectedDotList.Add(dotEntity);
+            SelectDotEntity(dotEntity);
         }
 
+        private bool TryDeselect(DotEntity hoveredDotEntity)
+        {
+            if (_selectedDotList.Count < 2) return false;
+            if (hoveredDotEntity == _selectedDotList[^2])
+            {
+                var lastAddedDotEntity = _selectedDotList[^1];
+                lastAddedDotEntity.Deselect();
+                _selectedDotList.Remove(lastAddedDotEntity);
+                return true;
+            }
+
+            return false;
+        }
+        
         private void HandleFingerUp()
         {
             foreach (var dotEntity in _selectedDotList)
@@ -61,8 +76,7 @@ namespace Game.Features.Dot.Scripts.Systems
         {
             if (TryGetDotEntityAtPosition(fingerDownSignal.InputPosition, out var dotEntity))
             {
-                dotEntity.GetSelected();
-                _selectedDotList.Add(dotEntity);
+                SelectDotEntity(dotEntity);
             }
         }
 
@@ -84,6 +98,13 @@ namespace Game.Features.Dot.Scripts.Systems
         {
             dotEntity = null;
             return _dotController.TryGetDotEntity(hitInfo.transform, out dotEntity);
+        }
+
+        private void SelectDotEntity(DotEntity dotEntity)
+        {
+            if (_selectedDotList.Contains(dotEntity)) return;
+            dotEntity.GetSelected();
+            _selectedDotList.Add(dotEntity);
         }
     }
 }

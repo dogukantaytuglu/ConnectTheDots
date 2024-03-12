@@ -1,4 +1,5 @@
 using Game.Features.Dot.Scripts.Systems;
+using Game.Features.Grid.Scripts.GridCell;
 using UnityEngine;
 using Zenject;
 
@@ -7,10 +8,12 @@ namespace Game.Features.Dot.Scripts.Dot
     public class DotEntity : MonoBehaviour, IDotOnGrid
     {
         public int CurrentValue { get; private set; }
+        public Vector2 DotCoordinate => _occupiedGridCellEntity.GridCoordinates;
 
         private DotVisualHandler _dotVisualHandler;
         private DotController _dotController;
         private DotAnimationHandler _dotAnimationHandler;
+        private GridCellEntity _occupiedGridCellEntity;
 
         [Inject]
         public void Construct(DotController dotController, DotVisualHandler dotVisualHandler, DotAnimationHandler dotAnimationHandler)
@@ -20,10 +23,11 @@ namespace Game.Features.Dot.Scripts.Dot
             _dotAnimationHandler = dotAnimationHandler;
         }
 
-        public void Initialize(int dotValue, Vector2 coordinates)
+        public void Initialize(int dotValue, GridCellEntity gridCellEntity)
         {
+            _occupiedGridCellEntity = gridCellEntity;
             SetValue(dotValue);
-            SetCoordinateOnGrid(coordinates);
+            SetNameWithCoordinate(_occupiedGridCellEntity.GridCoordinates);
             _dotController.RegisterDotEntity(this);
         }
 
@@ -33,7 +37,7 @@ namespace Game.Features.Dot.Scripts.Dot
             _dotVisualHandler.HandleVisualByValue(value);
         }
 
-        private void SetCoordinateOnGrid(Vector2 gridCoordinates)
+        private void SetNameWithCoordinate(Vector2 gridCoordinates)
         {
             name = $"Dot {gridCoordinates}";
         }
