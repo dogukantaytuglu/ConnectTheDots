@@ -1,4 +1,3 @@
-using DG.Tweening;
 using Game.Features.Dot.Scripts.Systems;
 using UnityEngine;
 using Zenject;
@@ -11,12 +10,14 @@ namespace Game.Features.Dot.Scripts.Dot
 
         private DotVisualHandler _dotVisualHandler;
         private DotController _dotController;
-        
+        private DotAnimationHandler _dotAnimationHandler;
+
         [Inject]
-        public void Construct(DotController dotController, DotVisualHandler dotVisualHandler)
+        public void Construct(DotController dotController, DotVisualHandler dotVisualHandler, DotAnimationHandler dotAnimationHandler)
         {
             _dotController = dotController;
             _dotVisualHandler = dotVisualHandler;
+            _dotAnimationHandler = dotAnimationHandler;
         }
 
         public void Initialize(int dotValue, Vector2 coordinates)
@@ -39,7 +40,12 @@ namespace Game.Features.Dot.Scripts.Dot
 
         public void GetSelected()
         {
-            transform.DOScale(1.2f ,0.2f);
+            _dotAnimationHandler.ScaleUp();
+        }
+
+        public void Deselect()
+        {
+            _dotAnimationHandler.ScaleDown();
         }
     }
 }

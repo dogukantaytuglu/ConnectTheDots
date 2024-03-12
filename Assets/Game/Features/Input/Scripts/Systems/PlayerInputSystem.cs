@@ -20,9 +20,12 @@ namespace Game.Features.Input.Scripts.Systems
             }
             if (UnityEngine.Input.GetMouseButton(0))
             {
+                
             }
+            
             if (UnityEngine.Input.GetMouseButtonUp(0))
             {
+                _signalBus.Fire<InputFingerUpSignal>();
             }
         }
     }

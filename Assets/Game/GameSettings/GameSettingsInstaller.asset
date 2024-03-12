@@ -23,6 +23,9 @@ MonoBehaviour:
     gridCellEntityPrefab: {fileID: 5645460284282004067, guid: 6e38186cb36d2c842ab9e31449596cbe, type: 3}
     isDebugViewActive: 0
   dotSettings:
+    scaleDuration: 0.1
+    scaleAmount: 1.15
+    mergeMovementDuration: 1
     dotColorPalette:
     - {r: 0.9058824, g: 0.4039216, b: 0.5568628, a: 1}
     - {r: 0.882353, g: 0.34509805, b: 0.23137257, a: 1}
