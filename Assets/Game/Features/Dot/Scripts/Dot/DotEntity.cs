@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Game.Features.Dot.Scripts.Interfaces;
 using Game.Features.Dot.Scripts.Systems;
 using Game.Features.Grid.Scripts.GridCell;
@@ -8,7 +9,7 @@ namespace Game.Features.Dot.Scripts.Dot
 {
     public class DotEntity : MonoBehaviour, ILineBetweenDotsRoutePoint
     {
-        public int CurrentValue { get; private set; }
+        public int Value { get; private set; }
         public Vector2 DotCoordinate => _occupiedGridCellEntity.GridCoordinates;
         public Vector3 LineBetweenDotsRoutePoint => _occupiedGridCellEntity.transform.position;
         public Color Color => _dotVisualHandler.Color;
@@ -34,9 +35,9 @@ namespace Game.Features.Dot.Scripts.Dot
             _dotController.RegisterDotEntity(this);
         }
 
-        private void SetValue(int value)
+        public void SetValue(int value)
         {
-            CurrentValue = value;
+            Value = value;
             _dotVisualHandler.HandleVisualByValue(value);
         }
 
@@ -53,6 +54,19 @@ namespace Game.Features.Dot.Scripts.Dot
         public void Deselect()
         {
             _dotAnimationHandler.ScaleDown();
+        }
+
+        public void MergeTo(DotEntity dotEntity)
+        {
+            var targetPosition = dotEntity.transform.position;
+            targetPosition.z += 1;
+            _dotAnimationHandler.MoveToPosition(targetPosition).OnComplete(DestroyThisDotEntity);
+        }
+
+        private void DestroyThisDotEntity()
+        {
+            _dotController.DeregisterDotEntity(this);
+            Destroy(gameObject);
         }
     }
 }

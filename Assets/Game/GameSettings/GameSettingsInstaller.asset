@@ -25,7 +25,7 @@ MonoBehaviour:
   dotSettings:
     scaleDuration: 0.07
     scaleAmount: 1.1
-    mergeMovementDuration: 1
+    mergeMovementDuration: 0.07
     dotColorPalette:
     - {r: 0.9058824, g: 0.4039216, b: 0.5568628, a: 1}
     - {r: 0.882353, g: 0.34509805, b: 0.23137257, a: 1}

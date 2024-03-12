@@ -33,6 +33,17 @@ namespace Game.Features.Dot.Scripts.Systems
             _dotEntityTransformDictionary.Add(dotEntity.transform, dotEntity);
         }
 
+        public void DeregisterDotEntity(DotEntity dotEntity)
+        {
+            if (!_allDotEntities.Remove(dotEntity))
+            {
+                this.LogError($"{dotEntity.name} is trying to de-register itself multiple times");
+                return;
+            }
+
+            _dotEntityTransformDictionary.Remove(dotEntity.transform);
+        }
+
         public bool TryGetDotEntity(Transform dotEntityTransform, out DotEntity dotEntity)
         {
             dotEntity = null;

@@ -24,6 +24,12 @@ namespace Game.Features.LineBetweenDots.Scripts.Line
         {
             _signalBus.Subscribe<SelectedDotListChangedSignal>(HandleSelectedDotsChanged);
             _signalBus.Subscribe<FirstDotSelectedSignal>(SetLineColor);
+            _signalBus.Subscribe<SelectedDostListClearedSignal>(ClearLines);
+        }
+
+        private void ClearLines()
+        {
+            lineRenderer.positionCount = 0;
         }
 
         private void SetLineColor(FirstDotSelectedSignal signal)
@@ -35,12 +41,6 @@ namespace Game.Features.LineBetweenDots.Scripts.Line
         private void HandleSelectedDotsChanged(SelectedDotListChangedSignal signal)
         {
             var dotEntities = signal.DotEntities;
-            if (dotEntities.Length < 1)
-            {
-                lineRenderer.positionCount = 0;
-                return;
-            }
-
             lineRenderer.positionCount = dotEntities.Length;
             for (var i = 0; i < dotEntities.Length; i++)
             {

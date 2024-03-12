@@ -24,16 +24,23 @@ namespace Game.Features.Dot.Scripts.Dot
         
         public void ScaleUp()
         {
-            if (_currentAnimationState == AnimationState.Selected) return;
+            if (_currentAnimationState != AnimationState.Idle) return;
             _currentAnimationState = AnimationState.Selected;
             transform.DOScale(_dotSettings.ScaleAmount ,_dotSettings.ScaleDuration);
         }
 
         public void ScaleDown()
         {
-            if (_currentAnimationState == AnimationState.Idle) return;
+            if (_currentAnimationState != AnimationState.Selected) return;
             _currentAnimationState = AnimationState.Idle;
             transform.DOScale(1f, _dotSettings.ScaleDuration);
+        }
+
+        public Tween MoveToPosition(Vector3 targetPosition)
+        {
+            ScaleDown();
+            _currentAnimationState = AnimationState.Moving;
+            return transform.DOMove(targetPosition, _dotSettings.MergeMovementDuration);
         }
     }
 }

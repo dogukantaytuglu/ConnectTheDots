@@ -4,11 +4,13 @@ namespace Game.Features.Dot.Scripts.Signals
 {
     public class FirstDotSelectedSignal
     {
-        public Color Color;
+        public readonly Color Color;
+        public readonly int Value;
 
-        public FirstDotSelectedSignal(Color color)
+        public FirstDotSelectedSignal(Color color, int value)
         {
             Color = color;
+            Value = value;
         }
     }
 }

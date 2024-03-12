@@ -40,10 +40,10 @@ namespace Game.Features.Dot.Scripts.Systems
         {
             if (_selectedDotList.Count < 1) return;
             var lastSelectedDot = _selectedDotList[^1];
-            var lastSelectedDotValue = lastSelectedDot.CurrentValue;
+            var lastSelectedDotValue = lastSelectedDot.Value;
             if (!TryGetDotEntityAtPosition(signal.InputPosition, out var dotEntity)) return;
             if (TryDeselect(dotEntity)) return;
-            if (dotEntity.CurrentValue != lastSelectedDotValue) return;
+            if (dotEntity.Value != lastSelectedDotValue) return;
             if (!_dotController.IsNeighbourDot(lastSelectedDot, dotEntity)) return;
 
             SelectDotEntity(dotEntity);
@@ -57,7 +57,7 @@ namespace Game.Features.Dot.Scripts.Systems
             }
 
             _selectedDotList.Clear();
-            FireSelectedDotListChangedSignal();
+            _signalBus.Fire<SelectedDostListClearedSignal>();
         }
 
         private void HandleFingerDown(InputFingerDownSignal fingerDownSignal)
@@ -65,7 +65,7 @@ namespace Game.Features.Dot.Scripts.Systems
             if (TryGetDotEntityAtPosition(fingerDownSignal.InputPosition, out var dotEntity))
             {
                 SelectDotEntity(dotEntity);
-                _signalBus.Fire(new FirstDotSelectedSignal(dotEntity.Color));
+                _signalBus.Fire(new FirstDotSelectedSignal(dotEntity.Color, dotEntity.Value));
             }
         }
 
