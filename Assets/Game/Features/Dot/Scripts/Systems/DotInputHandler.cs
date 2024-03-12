@@ -26,6 +26,25 @@ namespace Game.Features.Dot.Scripts.Systems
         {
             _signalBus.Subscribe<InputFingerDownSignal>(HandleFingerDown);
             _signalBus.Subscribe<InputFingerUpSignal>(HandleFingerUp);
+            _signalBus.Subscribe<InputFingerSignal>(HandleFingerMovement);
+        }
+
+        public void Dispose()
+        {
+            _signalBus.Unsubscribe<InputFingerDownSignal>(HandleFingerDown);
+            _signalBus.Unsubscribe<InputFingerUpSignal>(HandleFingerUp);
+            _signalBus.Unsubscribe<InputFingerSignal>(HandleFingerMovement);
+        }
+
+        private void HandleFingerMovement(InputFingerSignal signal)
+        {
+            if (_selectedDotList.Count < 1) return;
+            var lastSelectedDotValue = _selectedDotList[^1].CurrentValue;
+            if (!TryGetDotEntityAtPosition(signal.InputPosition, out var dotEntity)) return;
+            if (dotEntity.CurrentValue != lastSelectedDotValue) return;
+
+            dotEntity.GetSelected();
+            _selectedDotList.Add(dotEntity);
         }
 
         private void HandleFingerUp()
@@ -34,24 +53,25 @@ namespace Game.Features.Dot.Scripts.Systems
             {
                 dotEntity.Deselect();
             }
-            
-            _selectedDotList.Clear();
-        }
 
-        public void Dispose()
-        {
-            _signalBus.Unsubscribe<InputFingerDownSignal>(HandleFingerDown);
-            _signalBus.Unsubscribe<InputFingerUpSignal>(HandleFingerUp);
+            _selectedDotList.Clear();
         }
 
         private void HandleFingerDown(InputFingerDownSignal fingerDownSignal)
         {
-            var touchPosition = fingerDownSignal.InputPosition;
-            var ray = _mainCamera.ScreenPointToRay(touchPosition);
+            if (TryGetDotEntityAtPosition(fingerDownSignal.InputPosition, out var dotEntity))
+            {
+                dotEntity.GetSelected();
+                _selectedDotList.Add(dotEntity);
+            }
+        }
+
+        private bool TryGetDotEntityAtPosition(Vector3 screenPosition, out DotEntity dotEntity)
+        {
+            dotEntity = null;
+            var ray = _mainCamera.ScreenPointToRay(screenPosition);
             var hitInfo = Physics2D.Raycast(ray.origin, ray.direction);
-            if (IsInvalidHit(hitInfo)) return;
-            if (!TrySelectDotEntity(hitInfo, out var dotEntity)) return;
-            _selectedDotList.Add(dotEntity);
+            return !IsInvalidHit(hitInfo) && TryGetDotEntity(hitInfo, out dotEntity);
         }
 
         private static bool IsInvalidHit(RaycastHit2D hitInfo)
@@ -60,15 +80,10 @@ namespace Game.Features.Dot.Scripts.Systems
                    || !hitInfo.transform.CompareTag(TagNames.Dot);
         }
 
-        private bool TrySelectDotEntity(RaycastHit2D hitInfo, out DotEntity dotEntity)
+        private bool TryGetDotEntity(RaycastHit2D hitInfo, out DotEntity dotEntity)
         {
-            if (_dotController.TryGetDotEntity(hitInfo.transform, out dotEntity))
-            {
-                dotEntity.GetSelected();
-                return true;
-            }
-
-            return false;
+            dotEntity = null;
+            return _dotController.TryGetDotEntity(hitInfo.transform, out dotEntity);
         }
     }
 }

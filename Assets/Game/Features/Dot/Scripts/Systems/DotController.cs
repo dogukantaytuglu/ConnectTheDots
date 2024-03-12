@@ -15,6 +15,11 @@ namespace Game.Features.Dot.Scripts.Systems
         {
             _dotSpawner = dotSpawner;
         }
+        
+        public void Initialize()
+        {
+            _dotSpawner.PopulateGridWithDots();
+        }
 
         public void RegisterDotEntity(DotEntity dotEntity)
         {
@@ -32,11 +37,6 @@ namespace Game.Features.Dot.Scripts.Systems
             }
 
             return false;
-        }
-
-        public void Initialize()
-        {
-            _dotSpawner.PopulateGridWithDots();
         }
     }
 }

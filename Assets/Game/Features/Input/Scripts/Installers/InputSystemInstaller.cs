@@ -11,5 +11,6 @@ public class InputSystemInstaller : ScriptableObjectInstaller<InputSystemInstall
         Container.BindInterfacesAndSelfTo<PlayerInputSystem>().AsSingle().NonLazy();
         Container.DeclareSignal<InputFingerDownSignal>();
         Container.DeclareSignal<InputFingerUpSignal>();
+        Container.DeclareSignal<InputFingerSignal>();
     }
 }

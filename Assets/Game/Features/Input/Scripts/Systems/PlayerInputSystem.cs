@@ -20,7 +20,8 @@ namespace Game.Features.Input.Scripts.Systems
             }
             if (UnityEngine.Input.GetMouseButton(0))
             {
-                
+                var touchPosition = UnityEngine.Input.mousePosition;
+                _signalBus.Fire(new InputFingerSignal(touchPosition));
             }
             
             if (UnityEngine.Input.GetMouseButtonUp(0))
