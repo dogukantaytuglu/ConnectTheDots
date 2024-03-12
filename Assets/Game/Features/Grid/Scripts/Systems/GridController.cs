@@ -31,7 +31,7 @@ namespace Game.Features.Grid.Scripts.Systems
             return false;
         }
 
-        public void RegisterDotToGridCell(GridCellEntity gridCellEntity, IDotOnGrid dotToRegister)
+        public void RegisterDotToGridCell(GridCellEntity gridCellEntity, DotEntity dotToRegister)
         {
             gridCellEntity.RegisterDot(dotToRegister);
         }

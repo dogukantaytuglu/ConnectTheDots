@@ -1,5 +1,6 @@
 using Game.Features.Dot.Scripts.Dot;
 using Game.Features.Dot.Scripts.Settings;
+using Game.Features.Dot.Scripts.Signals;
 using Game.Features.Dot.Scripts.Systems;
 using UnityEngine;
 using Zenject;
@@ -13,6 +14,8 @@ public class DotInstaller : ScriptableObjectInstaller<DotInstaller>
         Container.BindInterfacesAndSelfTo<DotInputHandler>().AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<DotController>().AsSingle().NonLazy();
         Container.Bind<DotSpawner>().AsSingle().NonLazy();
+        Container.DeclareSignal<SelectedDotListChangedSignal>();
+        Container.DeclareSignal<FirstDotSelectedSignal>();
         
         Container.BindFactory<DotEntity, DotFactory>()
             .FromSubContainerResolve()

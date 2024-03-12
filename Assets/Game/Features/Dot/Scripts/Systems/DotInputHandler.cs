@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Game.Features.Dot.Scripts.Dot;
+using Game.Features.Dot.Scripts.Signals;
 using Game.Features.Input.Scripts.Signals;
 using UnityEngine;
 using Zenject;
@@ -47,20 +48,6 @@ namespace Game.Features.Dot.Scripts.Systems
 
             SelectDotEntity(dotEntity);
         }
-
-        private bool TryDeselect(DotEntity hoveredDotEntity)
-        {
-            if (_selectedDotList.Count < 2) return false;
-            if (hoveredDotEntity == _selectedDotList[^2])
-            {
-                var lastAddedDotEntity = _selectedDotList[^1];
-                lastAddedDotEntity.Deselect();
-                _selectedDotList.Remove(lastAddedDotEntity);
-                return true;
-            }
-
-            return false;
-        }
         
         private void HandleFingerUp()
         {
@@ -70,6 +57,7 @@ namespace Game.Features.Dot.Scripts.Systems
             }
 
             _selectedDotList.Clear();
+            FireSelectedDotListChangedSignal();
         }
 
         private void HandleFingerDown(InputFingerDownSignal fingerDownSignal)
@@ -77,6 +65,7 @@ namespace Game.Features.Dot.Scripts.Systems
             if (TryGetDotEntityAtPosition(fingerDownSignal.InputPosition, out var dotEntity))
             {
                 SelectDotEntity(dotEntity);
+                _signalBus.Fire(new FirstDotSelectedSignal(dotEntity.Color));
             }
         }
 
@@ -105,6 +94,27 @@ namespace Game.Features.Dot.Scripts.Systems
             if (_selectedDotList.Contains(dotEntity)) return;
             dotEntity.GetSelected();
             _selectedDotList.Add(dotEntity);
+            FireSelectedDotListChangedSignal();
+        }
+        
+        private bool TryDeselect(DotEntity hoveredDotEntity)
+        {
+            if (_selectedDotList.Count < 2) return false;
+            if (hoveredDotEntity == _selectedDotList[^2])
+            {
+                var lastAddedDotEntity = _selectedDotList[^1];
+                lastAddedDotEntity.Deselect();
+                _selectedDotList.Remove(lastAddedDotEntity);
+                FireSelectedDotListChangedSignal();
+                return true;
+            }
+
+            return false;
+        }
+        
+        private void FireSelectedDotListChangedSignal()
+        {
+            _signalBus.Fire(new SelectedDotListChangedSignal(_selectedDotList.ToArray()));
         }
     }
 }

@@ -42,4 +42,8 @@ MonoBehaviour:
     dotVisualRingActivationThreshold: 1024
     spawnParentName: Dots
   inputSettings:
-    minDragThreshold: 50
+    minDragThreshold: 35
+  lineBetweenDotsSettings:
+    lineRendererGameObject: {fileID: -7172854184305168615, guid: bb6e863e71919004385cfc67254330a6, type: 3}
+    lineRendererMaterial: {fileID: 2100000, guid: 01dcf4ba5d1d94e44a040f5d7f00c598, type: 2}
+    lineThickness: 0.1

@@ -7,11 +7,13 @@ namespace Game.Features.Dot.Scripts.Dot
 {
     public class DotVisualHandler : MonoBehaviour
     {
+        public Color Color => _color;
         [SerializeField] private GameObject innerRingGameObject;
         [SerializeField] private SpriteRenderer dotColorSprite;
         [SerializeField] private TextMeshPro valueText;
 
         private DotSettings _dotSettings;
+        private Color _color;
         
         [Inject]
         public void Construct(DotSettings dotSettings)
@@ -21,8 +23,8 @@ namespace Game.Features.Dot.Scripts.Dot
         
         public void HandleVisualByValue(int value)
         {
-            var color = _dotSettings.DotColorPalette[CalculateIndex(value)];
-            SetDotColor(color);
+            _color = _dotSettings.DotColorPalette[CalculateIndex(value)];
+            SetDotColor(_color);
             valueText.text = $"{value}";
             innerRingGameObject.SetActive(value > _dotSettings.DotVisualRingActivationThreshold);
         }

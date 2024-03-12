@@ -16,7 +16,7 @@ namespace Game.Features.Grid.Scripts.GridCell
         private GridSettings _gridSettings;
         private bool _isDebugViewActive;
         private Vector2 _gridCoordinates = Vector2.zero;
-        private IDotOnGrid _registeredDot;
+        private DotEntity _registeredDot;
 
         [Inject]
         public void Construct(GridSettings gridSettings, GridCellDebugView gridCellDebugView, GridController gridController)
@@ -54,7 +54,7 @@ namespace Game.Features.Grid.Scripts.GridCell
             _debugView.Initialize(_isDebugViewActive, _gridCoordinates);
         }
 
-        public void RegisterDot(IDotOnGrid dotToRegister)
+        public void RegisterDot(DotEntity dotToRegister)
         {
             _registeredDot = dotToRegister;
         }

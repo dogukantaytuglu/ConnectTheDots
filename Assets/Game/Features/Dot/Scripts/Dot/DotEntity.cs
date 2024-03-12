@@ -1,3 +1,4 @@
+using Game.Features.Dot.Scripts.Interfaces;
 using Game.Features.Dot.Scripts.Systems;
 using Game.Features.Grid.Scripts.GridCell;
 using UnityEngine;
@@ -5,10 +6,12 @@ using Zenject;
 
 namespace Game.Features.Dot.Scripts.Dot
 {
-    public class DotEntity : MonoBehaviour, IDotOnGrid
+    public class DotEntity : MonoBehaviour, ILineBetweenDotsRoutePoint
     {
         public int CurrentValue { get; private set; }
         public Vector2 DotCoordinate => _occupiedGridCellEntity.GridCoordinates;
+        public Vector3 LineBetweenDotsRoutePoint => _occupiedGridCellEntity.transform.position;
+        public Color Color => _dotVisualHandler.Color;
 
         private DotVisualHandler _dotVisualHandler;
         private DotController _dotController;
