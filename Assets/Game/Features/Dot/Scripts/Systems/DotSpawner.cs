@@ -31,7 +31,6 @@ namespace Game.Features.Dot.Scripts.Systems
         {
             var dotEntity = _dotFactory.Create();
             dotEntity.transform.position = freeCellEntity.transform.position;
-            _gridController.RegisterDotToGridCell(freeCellEntity, dotEntity);
             var starterValueList = _dotSettings.StarterValues;
             var randomIndex = Random.Range(0, starterValueList.Count);
             dotEntity.Initialize(starterValueList[randomIndex], freeCellEntity);

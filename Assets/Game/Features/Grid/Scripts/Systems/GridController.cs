@@ -1,25 +1,31 @@
 using System.Collections.Generic;
-using Game.Features.Dot.Scripts.Dot;
 using Game.Features.Grid.Scripts.GridCell;
+using UnityEngine;
 
 namespace Game.Features.Grid.Scripts.Systems
 {
     public class GridController
     {
-        private readonly HashSet<GridCellEntity> _allGridCells = new();
+        public HashSet<GridCellEntity> AllGridCells { get; } = new();
+        public Dictionary<Vector2, GridCellEntity> GridCellByCoordinateDictionary { get; } = new();
+
 
         public void RegisterGridCell(GridCellEntity gridCellEntity)
         {
-            if (_allGridCells.Add(gridCellEntity)) return;
+            if (!AllGridCells.Add(gridCellEntity))
+            {
+                this.LogError(
+                    $"{gridCellEntity.name} is trying to register itself to the grid controller but it already exists!");
+                return;
+            }
 
-            this.LogError(
-                $"{gridCellEntity.name} is trying to register itself to the grid controller but it already exists!");
+            GridCellByCoordinateDictionary.Add(gridCellEntity.GridCoordinates, gridCellEntity);
         }
 
         public bool TryGetFreeCellEntity(out GridCellEntity freeCellEntity)
         {
             freeCellEntity = null;
-            foreach (var gridCellEntity in _allGridCells)
+            foreach (var gridCellEntity in AllGridCells)
             {
                 if (gridCellEntity.IsGridCellFree)
                 {
@@ -29,11 +35,6 @@ namespace Game.Features.Grid.Scripts.Systems
             }
 
             return false;
-        }
-
-        public void RegisterDotToGridCell(GridCellEntity gridCellEntity, DotEntity dotToRegister)
-        {
-            gridCellEntity.RegisterDot(dotToRegister);
         }
     }
 }

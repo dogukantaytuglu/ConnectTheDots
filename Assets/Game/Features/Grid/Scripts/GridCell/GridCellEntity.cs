@@ -10,6 +10,7 @@ namespace Game.Features.Grid.Scripts.GridCell
     {
         public bool IsGridCellFree => _registeredDot == null;
         public Vector2 GridCoordinates => _gridCoordinates;
+        public DotEntity RegisteredDotEntity => _registeredDot;
         
         private GridCellDebugView _debugView;
         private GridController _gridController;
@@ -30,10 +31,9 @@ namespace Game.Features.Grid.Scripts.GridCell
         {
             _isDebugViewActive= _gridSettings.IsDebugViewActive;
             transform.localScale = Vector3.one * _gridSettings.CellScale;
-            _gridController.RegisterGridCell(this);
-            
             SetPosition(position);
             SetGridCoordinates(coordinates);
+            _gridController.RegisterGridCell(this);
         }
 
         private void SetPosition(Vector2 position)

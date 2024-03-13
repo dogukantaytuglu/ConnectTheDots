@@ -13,7 +13,8 @@ namespace Game.Features.Grid.Scripts.Installer
         public override void InstallBindings()
         {
             Container.BindInterfacesAndSelfTo<GridGenerator>().AsSingle().NonLazy();
-            Container.Bind<GridController>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<GridController>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<GridDotDropHandler>().AsSingle().NonLazy();
             
             Container.BindFactory<GridCellEntity, GridCellFactory>()
                 .FromSubContainerResolve()
