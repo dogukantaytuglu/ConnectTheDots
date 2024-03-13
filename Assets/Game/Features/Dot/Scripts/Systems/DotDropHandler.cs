@@ -1,25 +1,30 @@
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
+using Game.Features.Dot.Scripts.Settings;
 using Game.Features.Dot.Scripts.Signals;
 using Game.Features.Grid.Scripts.GridCell;
 using Game.Features.Grid.Scripts.Settings;
+using Game.Features.Grid.Scripts.Systems;
 using UnityEngine;
 using Zenject;
 
-namespace Game.Features.Grid.Scripts.Systems
+namespace Game.Features.Dot.Scripts.Systems
 {
-    public class GridDotDropHandler : IInitializable, IDisposable
+    public class DotDropHandler : IInitializable, IDisposable
     {
         private readonly GridController _gridController;
         private readonly SignalBus _signalBus;
         private readonly List<GridCellEntity> _emptyCellBuffer = new();
         private readonly GridSettings _gridSettings;
+        private readonly DotSettings _dotSettings;
         
-        public GridDotDropHandler(GridController gridController, SignalBus signalBus, GridSettings gridSettings)
+        public DotDropHandler(GridController gridController, SignalBus signalBus, GridSettings gridSettings, DotSettings dotSettings)
         {
             _gridController = gridController;
             _signalBus = signalBus;
             _gridSettings = gridSettings;
+            _dotSettings = dotSettings;
         }
         
         public void Initialize()
@@ -65,14 +70,27 @@ namespace Game.Features.Grid.Scripts.Systems
                     continue;
                 }
 
+                if (gridCellOnTop.IsGridCellFree)
+                {
+                    targetCoordinate.y++;
+                    continue;
+                }
+
                 var gridToDropDownCoordinate = targetCoordinate;
                 gridToDropDownCoordinate.y -= spaceToDrop;
                 var gridToDropDown = _gridController.GridCellByCoordinateDictionary[gridToDropDownCoordinate];
                 gridCellOnTop.RegisteredDotEntity.DropDownTo(gridToDropDown);
                 targetCoordinate.y++;
             }
+
+            DOVirtual.DelayedCall(_dotSettings.DropDownMovementDuration, FireDotDropCompleteSignal);
         }
-        
+
+        private void FireDotDropCompleteSignal()
+        {
+            _signalBus.Fire<DotDropCompleteSignal>();
+        }
+
         public void Dispose()
         {
             _signalBus.Unsubscribe<MergeCompleteSignal>(StartDotDropSequence);

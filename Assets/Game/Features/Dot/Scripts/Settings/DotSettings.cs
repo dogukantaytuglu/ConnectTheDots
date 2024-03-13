@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Game.Features.Dot.Scripts.Dot;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Game.Features.Dot.Scripts.Settings
 {
@@ -17,10 +18,13 @@ namespace Game.Features.Dot.Scripts.Settings
         public float ScaleAmount => scaleAmount;
         public float MergeMovementDuration => mergeMovementDuration;
 
+        public float DropDownMovementDuration => dropDownMovementDuration;
+
         [Header("Animation Parameters")] 
         [SerializeField] private float scaleDuration;
         [SerializeField] private float scaleAmount;
         [SerializeField] private float mergeMovementDuration;
+        [SerializeField] private float dropDownMovementDuration;
         
         [Header("Others")]
         [SerializeField] private List<Color> dotColorPalette;

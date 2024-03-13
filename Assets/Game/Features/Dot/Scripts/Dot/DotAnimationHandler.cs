@@ -36,11 +36,17 @@ namespace Game.Features.Dot.Scripts.Dot
             transform.DOScale(1f, _dotSettings.ScaleDuration);
         }
 
-        public Tween MoveToPosition(Vector3 targetPosition)
+        public Tween MoveToMergePosition(Vector3 targetPosition)
         {
-            ScaleDown();
             _currentAnimationState = AnimationState.Moving;
             return transform.DOMove(targetPosition, _dotSettings.MergeMovementDuration);
+        }
+
+        public void MoveToDropPosition(Vector3 targetPosition)
+        {
+            _currentAnimationState = AnimationState.Moving;
+            transform.DOMove(targetPosition, _dotSettings.DropDownMovementDuration)
+                .OnComplete(() => _currentAnimationState = AnimationState.Idle);
         }
     }
 }

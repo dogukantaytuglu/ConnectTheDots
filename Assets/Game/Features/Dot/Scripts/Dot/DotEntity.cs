@@ -62,7 +62,8 @@ namespace Game.Features.Dot.Scripts.Dot
         {
             var targetPosition = dotEntity.transform.position;
             targetPosition.z += 1;
-            _dotAnimationHandler.MoveToPosition(targetPosition).OnComplete(Despawn);
+            _dotAnimationHandler.ScaleDown();
+            _dotAnimationHandler.MoveToMergePosition(targetPosition).OnComplete(Despawn);
         }
 
         private void Despawn()
@@ -87,7 +88,7 @@ namespace Game.Features.Dot.Scripts.Dot
             _occupiedGridCellEntity.DeregisterDot();
             _occupiedGridCellEntity = gridCellEntity;
             _occupiedGridCellEntity.RegisterDot(this);
-            transform.DOMove(gridCellEntity.transform.position, 0.3f);
+            _dotAnimationHandler.MoveToDropPosition(gridCellEntity.transform.position);
         }
     }
 }

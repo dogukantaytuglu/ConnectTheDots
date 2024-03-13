@@ -15,12 +15,13 @@ public class DotInstaller : ScriptableObjectInstaller<DotInstaller>
         Container.BindInterfacesAndSelfTo<DotInputHandler>().AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<DotController>().AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<DotMergeController>().AsSingle().NonLazy();
-        Container.Bind<DotSpawner>().AsSingle().NonLazy();
+        Container.BindInterfacesAndSelfTo<DotSpawner>().AsSingle().NonLazy();
 
         Container.DeclareSignal<SelectedDotListChangedSignal>();
         Container.DeclareSignal<FirstDotSelectedSignal>();
         Container.DeclareSignal<SelectedDotsListClearedSignal>();
         Container.DeclareSignal<MergeCompleteSignal>();
+        Container.DeclareSignal<DotDropCompleteSignal>();
 
         Container.BindFactory<DotEntity, DotFactory>()
             .FromPoolableMemoryPool<DotEntity, DotPool>(poolBinder => poolBinder

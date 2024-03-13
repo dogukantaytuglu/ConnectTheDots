@@ -1,22 +1,32 @@
+using System;
 using Game.Features.Dot.Scripts.Dot;
 using Game.Features.Dot.Scripts.Settings;
+using Game.Features.Dot.Scripts.Signals;
 using Game.Features.Grid.Scripts.GridCell;
 using Game.Features.Grid.Scripts.Systems;
-using UnityEngine;
+using Zenject;
+using Random = UnityEngine.Random;
 
 namespace Game.Features.Dot.Scripts.Systems
 {
-    public class DotSpawner
+    public class DotSpawner : IInitializable, IDisposable
     {
         private readonly GridController _gridController;
         private readonly DotFactory _dotFactory;
         private readonly DotSettings _dotSettings;
+        private readonly SignalBus _signalBus;
 
-        public DotSpawner(GridController gridController, DotFactory dotFactory, DotSettings dotSettings)
+        public DotSpawner(GridController gridController, DotFactory dotFactory, DotSettings dotSettings, SignalBus signalBus)
         {
             _gridController = gridController;
             _dotFactory = dotFactory;
             _dotSettings = dotSettings;
+            _signalBus = signalBus;
+        }
+        
+        public void Initialize()
+        {
+            _signalBus.Subscribe<DotDropCompleteSignal>(PopulateGridWithDots);
         }
         
         public void PopulateGridWithDots()
@@ -34,6 +44,11 @@ namespace Game.Features.Dot.Scripts.Systems
             var starterValueList = _dotSettings.StarterValues;
             var randomIndex = Random.Range(0, starterValueList.Count);
             dotEntity.Initialize(starterValueList[randomIndex], freeCellEntity);
+        }
+
+        public void Dispose()
+        {
+            _signalBus.Unsubscribe<DotDropCompleteSignal>(PopulateGridWithDots);
         }
     }
 }
