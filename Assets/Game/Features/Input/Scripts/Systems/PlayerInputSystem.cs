@@ -13,6 +13,7 @@ namespace Game.Features.Input.Scripts.Systems
         private readonly InputSettings _inputSettings;
         private Vector3 _lastDragPosition;
         private bool _canInteract = true;
+        private float _debugTimeScale = 0.2f;
 
         public PlayerInputSystem(SignalBus signalBus, InputSettings inputSettings)
         {
@@ -27,6 +28,16 @@ namespace Game.Features.Input.Scripts.Systems
 
         public void Tick()
         {
+            if (UnityEngine.Input.GetKey(KeyCode.LeftShift))
+            {
+                Time.timeScale = _debugTimeScale;
+            }
+
+            else if(Math.Abs(Time.timeScale - 1f) > 0.1f)
+            {
+                Time.timeScale = 1f;
+            }
+            
             if (!_canInteract) return;
             
             if (UnityEngine.Input.GetMouseButtonDown(0))
