@@ -74,9 +74,9 @@ namespace Game.Features.Dot.Scripts.Dot
             var initLocalYPosition = visualChildTransform.localPosition.y;
             
             _bounceAnimation.Append(visualChildTransform.DOScaleY(initYScale * 1 - _dotSettings.BouncePower, halfTotalDuration));
-            _bounceAnimation.Join(visualChildTransform.DOLocalMoveY(initLocalYPosition - _dotSettings.BouncePower * 0.5f, _dotSettings.BounceTotalDuration));
+            _bounceAnimation.Join(visualChildTransform.DOLocalMoveY(initLocalYPosition - _dotSettings.BouncePower * 0.5f, halfTotalDuration));
             _bounceAnimation.Append(visualChildTransform.DOScaleY(initYScale, halfTotalDuration));
-            _bounceAnimation.Append(visualChildTransform.DOLocalMoveY(initLocalYPosition, halfTotalDuration));
+            _bounceAnimation.Join(visualChildTransform.DOLocalMoveY(initLocalYPosition, halfTotalDuration));
         }
 
         public void MoveToDropPosition(Vector3 targetPosition)
