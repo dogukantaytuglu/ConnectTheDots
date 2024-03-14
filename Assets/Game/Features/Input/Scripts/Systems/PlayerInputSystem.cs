@@ -28,16 +28,13 @@ namespace Game.Features.Input.Scripts.Systems
 
         public void Tick()
         {
-            if (UnityEngine.Input.GetKey(KeyCode.LeftShift))
-            {
-                Time.timeScale = _debugTimeScale;
-            }
+            HandleDebugInputs();
 
-            else if(Math.Abs(Time.timeScale - 1f) > 0.1f)
-            {
-                Time.timeScale = 1f;
-            }
-            
+            HandlePlayerInputs();
+        }
+
+        private void HandlePlayerInputs()
+        {
             if (!_canInteract) return;
             
             if (UnityEngine.Input.GetMouseButtonDown(0))
@@ -53,6 +50,19 @@ namespace Game.Features.Input.Scripts.Systems
             if (UnityEngine.Input.GetMouseButtonUp(0))
             {
                 HandleMouseButtonUp();
+            }
+        }
+
+        private void HandleDebugInputs()
+        {
+            if (UnityEngine.Input.GetKey(KeyCode.LeftShift))
+            {
+                Time.timeScale = _debugTimeScale;
+            }
+
+            else if(Math.Abs(Time.timeScale - 1f) > 0.1f)
+            {
+                Time.timeScale = 1f;
             }
         }
 
