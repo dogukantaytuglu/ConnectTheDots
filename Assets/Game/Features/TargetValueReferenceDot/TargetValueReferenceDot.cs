@@ -1,4 +1,3 @@
-using System;
 using Game.Features.Dot.Scripts.Dot;
 using Game.Features.Dot.Scripts.Signals;
 using Game.Features.Dot.Scripts.Systems;

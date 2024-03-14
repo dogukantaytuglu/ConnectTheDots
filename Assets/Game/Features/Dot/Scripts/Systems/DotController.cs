@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Game.Features.AutoSave.Systems;
 using Game.Features.Dot.Scripts.Dot;
 using UnityEngine;
 using Zenject;
@@ -11,15 +12,24 @@ namespace Game.Features.Dot.Scripts.Systems
 
         private readonly Dictionary<Transform, DotEntity> _dotEntityTransformDictionary = new();
         private readonly HashSet<DotEntity> _allDotEntities = new();
+        private readonly AutoSaveSystem _autoSaveSystem;
 
-        public DotController(DotSpawner dotSpawner)
+        public DotController(DotSpawner dotSpawner, AutoSaveSystem autoSaveSystem)
         {
             _dotSpawner = dotSpawner;
+            _autoSaveSystem = autoSaveSystem;
         }
         
         public void Initialize()
         {
-            _dotSpawner.PopulateGridWithDots();
+            if (_autoSaveSystem.TryLoadGame(out var saveGameData))
+            {
+                _dotSpawner.PopulateGridWithSaveGameData(saveGameData);
+            }
+            else
+            {
+                _dotSpawner.PopulateGridWithRandomDots();
+            }
         }
 
         public void RegisterDotEntity(DotEntity dotEntity)

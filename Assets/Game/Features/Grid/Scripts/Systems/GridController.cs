@@ -56,5 +56,19 @@ namespace Game.Features.Grid.Scripts.Systems
         {
             return FreeGridCells.Contains(gridCellEntity);
         }
+
+        public bool TryGetGridCellByCoordinate(Vector2 dataCoordinate, out GridCellEntity gridCellEntity)
+        {
+            gridCellEntity = null;
+            foreach (var gridCell in AllGridCells)
+            {
+                if (gridCell.GridCoordinates != dataCoordinate) continue;
+                gridCellEntity = gridCell;
+                return true;
+            }
+
+            this.LogError($"Tried to get cell by coordinate {dataCoordinate} but cell not found");
+            return false;
+        }
     }
 }

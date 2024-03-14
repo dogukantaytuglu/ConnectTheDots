@@ -1,4 +1,6 @@
 using System;
+using Game.Features.AutoSave.Data;
+using Game.Features.AutoSave.Systems;
 using Game.Features.Dot.Scripts.Dot;
 using Game.Features.Dot.Scripts.Settings;
 using Game.Features.Dot.Scripts.Signals;
@@ -16,7 +18,10 @@ namespace Game.Features.Dot.Scripts.Systems
         private readonly DotSettings _dotSettings;
         private readonly SignalBus _signalBus;
 
-        public DotSpawner(GridController gridController, DotFactory dotFactory, DotSettings dotSettings, SignalBus signalBus)
+        public DotSpawner(GridController gridController, 
+            DotFactory dotFactory, 
+            DotSettings dotSettings, 
+            SignalBus signalBus)
         {
             _gridController = gridController;
             _dotFactory = dotFactory;
@@ -26,29 +31,50 @@ namespace Game.Features.Dot.Scripts.Systems
         
         public void Initialize()
         {
-            _signalBus.Subscribe<DotDropCompleteSignal>(PopulateGridWithDots);
+            _signalBus.Subscribe<DotDropCompleteSignal>(PopulateGridWithRandomDots);
         }
         
-        public void PopulateGridWithDots()
+        public void PopulateGridWithRandomDots()
         {
             while (_gridController.TryGetFreeCellEntity(out var freeCellEntity))
             {
-                SpawnDotEntityOnGridCell(freeCellEntity);
+                SpawnRandomDotEntityOnGridCell(freeCellEntity);
+            }
+        }
+        
+        public void PopulateGridWithSaveGameData(SaveGameData saveGameData)
+        {
+            foreach (var data in saveGameData.DotSaveDatas)
+            {
+                if (_gridController.TryGetGridCellByCoordinate(data.Coordinate, out var gridCellEntity))
+                {
+                    SpawnDot(gridCellEntity, data.Value);
+                }
             }
         }
 
-        private void SpawnDotEntityOnGridCell(GridCellEntity freeCellEntity)
+        private void SpawnRandomDotEntityOnGridCell(GridCellEntity freeCellEntity)
+        {
+            SpawnDot(freeCellEntity, GetRandomValueForDot());
+        }
+
+        private void SpawnDot(GridCellEntity targetGridCell, int value)
         {
             var dotEntity = _dotFactory.Create();
-            dotEntity.transform.position = freeCellEntity.transform.position;
+            dotEntity.transform.position = targetGridCell.transform.position;
+            dotEntity.Initialize(value, targetGridCell);
+        }
+
+        private int GetRandomValueForDot()
+        {
             var starterValueList = _dotSettings.StarterValues;
             var randomIndex = Random.Range(0, starterValueList.Count);
-            dotEntity.Initialize(starterValueList[randomIndex], freeCellEntity);
+            return starterValueList[randomIndex];
         }
 
         public void Dispose()
         {
-            _signalBus.Unsubscribe<DotDropCompleteSignal>(PopulateGridWithDots);
+            _signalBus.Unsubscribe<DotDropCompleteSignal>(PopulateGridWithRandomDots);
         }
     }
 }
