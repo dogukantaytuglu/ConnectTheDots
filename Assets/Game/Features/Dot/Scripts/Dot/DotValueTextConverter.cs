@@ -2,18 +2,17 @@ namespace Game.Features.Dot.Scripts.Dot
 {
     public class DotValueTextConverter
     {
+        private const int ValueToMod = 1000;
+
         public string Convert(int value)
         {
-            if (value < 1024)
+            if (value < ValueToMod)
             {
                 return value.ToString();
             }
 
-            else
-            {
-                var dividedToThousand = value / 1000.0;
-                return dividedToThousand.ToString("0") + "K";
-            }
+            var dividedToThousand = value / ValueToMod;
+            return dividedToThousand.ToString("0") + "K";
         }
     }
 }
