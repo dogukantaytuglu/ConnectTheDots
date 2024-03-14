@@ -12,7 +12,7 @@ public class DotInstaller : ScriptableObjectInstaller<DotInstaller>
 
     public override void InstallBindings()
     {
-        Container.BindInterfacesAndSelfTo<DotInputHandler>().AsSingle().NonLazy();
+        Container.BindInterfacesAndSelfTo<DotSelectionHandler>().AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<DotController>().AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<DotMergeController>().AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<DotSpawner>().AsSingle().NonLazy();

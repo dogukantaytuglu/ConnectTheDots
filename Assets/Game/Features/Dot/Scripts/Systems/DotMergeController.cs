@@ -13,24 +13,19 @@ namespace Game.Features.Dot.Scripts.Systems
         private readonly DotSettings _dotSettings;
         private DotEntity[] _selectedDotEntities;
         private DotEntity _dotEntityToMerge;
-        private int _baseValue;
+        private readonly DotSelectionHandler _dotSelectionHandler;
 
-        public DotMergeController(SignalBus signalBus, DotSettings dotSettings)
+        public DotMergeController(SignalBus signalBus, DotSettings dotSettings, DotSelectionHandler dotSelectionHandler)
         {
             _signalBus = signalBus;
             _dotSettings = dotSettings;
+            _dotSelectionHandler = dotSelectionHandler;
         }
 
         public void Initialize()
         {
             _signalBus.Subscribe<SelectedDotListChangedSignal>(SaveSelectedDots);
             _signalBus.Subscribe<SelectedDotsListClearedSignal>(TryMerge);
-            _signalBus.Subscribe<FirstDotSelectedSignal>(SaveBaseValue);
-        }
-
-        private void SaveBaseValue(FirstDotSelectedSignal signal)
-        {
-            _baseValue = signal.Value;
         }
 
         private void TryMerge()
@@ -56,18 +51,11 @@ namespace Game.Features.Dot.Scripts.Systems
         {
             var lastSelectedDotEntity = _selectedDotEntities[^1];
             _dotEntityToMerge = lastSelectedDotEntity;
-            lastSelectedDotEntity.SetValue(CalculateFinalValue());
+            lastSelectedDotEntity.SetValue(_dotSelectionHandler.CalculateTotalMergeValue());
             for (var i = 0; i < _selectedDotEntities.Length - 1; i++)
             {
                 _selectedDotEntities[i].MergeTo(lastSelectedDotEntity);
             }
-        }
-
-        private int CalculateFinalValue()
-        {
-            var multiplier = _selectedDotEntities.Length < 4 ? 2 : 4;
-
-            return _baseValue * multiplier;
         }
 
         private void FireMergeCompleteSignal()
@@ -94,7 +82,6 @@ namespace Game.Features.Dot.Scripts.Systems
         {
             _signalBus.Unsubscribe<SelectedDotListChangedSignal>(SaveSelectedDots);
             _signalBus.Unsubscribe<SelectedDotsListClearedSignal>(TryMerge);
-            _signalBus.Unsubscribe<FirstDotSelectedSignal>(SaveBaseValue);
         }
     }
 }

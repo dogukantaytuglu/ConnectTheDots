@@ -8,14 +8,15 @@ using Zenject;
 
 namespace Game.Features.Dot.Scripts.Systems
 {
-    public class DotInputHandler : IInitializable, IDisposable
+    public class DotSelectionHandler : IInitializable, IDisposable
     {
         private readonly SignalBus _signalBus;
         private readonly Camera _mainCamera;
         private readonly DotController _dotController;
         private readonly List<DotEntity> _selectedDotList = new();
+        private int _baseValue;
 
-        public DotInputHandler(SignalBus signalBus, Camera mainCamera, DotController dotController)
+        public DotSelectionHandler(SignalBus signalBus, Camera mainCamera, DotController dotController)
         {
             _signalBus = signalBus;
             _mainCamera = mainCamera;
@@ -87,6 +88,7 @@ namespace Game.Features.Dot.Scripts.Systems
             if (_selectedDotList.Contains(dotEntity)) return;
             dotEntity.GetSelected();
             _selectedDotList.Add(dotEntity);
+            _baseValue = dotEntity.Value;
             FireSelectedDotListChangedSignal();
         }
         
@@ -103,6 +105,14 @@ namespace Game.Features.Dot.Scripts.Systems
             }
 
             return false;
+        }
+        
+                
+        public int CalculateTotalMergeValue()
+        {
+            var multiplier = _selectedDotList.Count < 4 ? 2 : 4;
+
+            return _baseValue * multiplier;
         }
         
         private void FireSelectedDotListChangedSignal()

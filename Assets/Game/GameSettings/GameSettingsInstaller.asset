@@ -30,8 +30,8 @@ MonoBehaviour:
     bouncePower: 0.06
     bounceTotalDuration: 0.055
     spawnAnimationDuration: 0.2
-    popOnMergeDuration: 0.1
-    popOnMergeStrength: 0.1
+    popOnMergeDuration: 0.2
+    popOnMergeStrength: 0.2
     dotColorPalette:
     - {r: 0.9058824, g: 0.4039216, b: 0.5568628, a: 1}
     - {r: 0.882353, g: 0.34509805, b: 0.23137257, a: 1}
