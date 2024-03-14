@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ee6d5bc022412fd4986ef60ed262e40a
+guid: 22dac27f6cd596d429101723d608c6a3
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Baloo
+  - Baloo Bhaijaan
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
