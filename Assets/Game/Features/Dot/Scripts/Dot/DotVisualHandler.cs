@@ -26,7 +26,7 @@ namespace Game.Features.Dot.Scripts.Dot
             _color = _dotSettings.DotColorPalette[CalculateIndex(value)];
             SetDotColor(_color);
             valueText.text = $"{value}";
-            innerRingGameObject.SetActive(value > _dotSettings.DotVisualRingActivationThreshold);
+            innerRingGameObject.SetActive(value >= _dotSettings.DotVisualRingActivationThreshold);
         }
 
         private void SetDotColor(Color color)
