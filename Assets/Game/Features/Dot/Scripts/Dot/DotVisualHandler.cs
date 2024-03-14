@@ -13,19 +13,21 @@ namespace Game.Features.Dot.Scripts.Dot
         [SerializeField] private TextMeshPro valueText;
 
         private DotSettings _dotSettings;
+        private DotValueTextConverter _dotValueTextConverter;
         private Color _color;
         
         [Inject]
-        public void Construct(DotSettings dotSettings)
+        public void Construct(DotSettings dotSettings, DotValueTextConverter dotValueTextConverter)
         {
             _dotSettings = dotSettings;
+            _dotValueTextConverter = dotValueTextConverter;
         }
         
         public void HandleVisualByValue(int value)
         {
             _color = _dotSettings.DotColorPalette[CalculateIndex(value)];
             SetDotColor(_color);
-            valueText.text = $"{value}";
+            valueText.text = _dotValueTextConverter.Convert(value);
             innerRingGameObject.SetActive(value >= _dotSettings.DotVisualRingActivationThreshold);
         }
 

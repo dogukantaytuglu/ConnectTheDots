@@ -16,6 +16,7 @@ public class DotInstaller : ScriptableObjectInstaller<DotInstaller>
         Container.BindInterfacesAndSelfTo<DotController>().AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<DotMergeController>().AsSingle().NonLazy();
         Container.BindInterfacesAndSelfTo<DotSpawner>().AsSingle().NonLazy();
+        Container.Bind<DotValueTextConverter>().AsSingle().NonLazy();
 
         Container.DeclareSignal<SelectedDotListChangedSignal>();
         Container.DeclareSignal<FirstDotSelectedSignal>();
