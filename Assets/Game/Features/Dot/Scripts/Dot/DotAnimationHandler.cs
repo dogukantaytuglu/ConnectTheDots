@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using DG.Tweening;
 using Game.Features.Dot.Scripts.Settings;
 using UnityEngine;
@@ -13,40 +14,105 @@ namespace Game.Features.Dot.Scripts.Dot
     }
     public class DotAnimationHandler : MonoBehaviour
     {
+        [SerializeField] private Transform visualChildTransform;
         private DotSettings _dotSettings;
         private AnimationState _currentAnimationState = AnimationState.Idle;
+        private readonly List<Tween> _allTweenList = new();
+        private Tween _moveToMergePositionTween;
+        private Tween _scaleTween;
+        private Tween _dropTween;
+        private Tween _spawnAnimationTween;
+        private Sequence _bounceAnimation;
+        private Tween _popAnimationTween;
 
         [Inject]
         public void Construct(DotSettings dotSettings)
         {
             _dotSettings = dotSettings;
         }
-        
+
+        private void Awake()
+        {
+            _allTweenList.Add(_moveToMergePositionTween);
+            _allTweenList.Add(_scaleTween);
+            _allTweenList.Add(_bounceAnimation);
+            _allTweenList.Add(_spawnAnimationTween);
+            _allTweenList.Add(_popAnimationTween);
+        }
+
         public void ScaleUp()
         {
             if (_currentAnimationState != AnimationState.Idle) return;
+            KilLAllTween();
             _currentAnimationState = AnimationState.Selected;
-            transform.DOScale(_dotSettings.ScaleAmount ,_dotSettings.ScaleDuration);
+            _scaleTween = transform.DOScale(_dotSettings.ScaleAmount ,_dotSettings.ScaleDuration);
         }
 
         public void ScaleDown()
         {
             if (_currentAnimationState != AnimationState.Selected) return;
+            KilLAllTween();
             _currentAnimationState = AnimationState.Idle;
-            transform.DOScale(1f, _dotSettings.ScaleDuration);
+            _scaleTween = transform.DOScale(1f, _dotSettings.ScaleDuration);
         }
 
-        public Tween MoveToMergePosition(Vector3 targetPosition)
+        public void MoveToMergePosition(Vector3 targetPosition, TweenCallback onCompleteAction)
         {
+            KilLAllTween();
             _currentAnimationState = AnimationState.Moving;
-            return transform.DOMove(targetPosition, _dotSettings.MergeMovementDuration);
+            _moveToMergePositionTween = transform.DOMove(targetPosition, _dotSettings.MergeMovementDuration);
+
+            if (onCompleteAction != null) 
+                _moveToMergePositionTween.onComplete += onCompleteAction;
+        }
+
+        private void PlayBounceAnimation()
+        {
+            var halfTotalDuration = _dotSettings.BounceTotalDuration * 0.5f;
+            _bounceAnimation = DOTween.Sequence();
+            var initYScale = visualChildTransform.localScale.y;
+            var initLocalYPosition = visualChildTransform.localPosition.y;
+            
+            _bounceAnimation.Append(visualChildTransform.DOScaleY(initYScale * 1 - _dotSettings.BouncePower, halfTotalDuration));
+            _bounceAnimation.Join(visualChildTransform.DOLocalMoveY(initLocalYPosition - _dotSettings.BouncePower * 0.5f, _dotSettings.BounceTotalDuration));
+            _bounceAnimation.Append(visualChildTransform.DOScaleY(initYScale, halfTotalDuration));
+            _bounceAnimation.Append(visualChildTransform.DOLocalMoveY(initLocalYPosition, halfTotalDuration));
         }
 
         public void MoveToDropPosition(Vector3 targetPosition)
         {
+            KilLAllTween();
             _currentAnimationState = AnimationState.Moving;
-            transform.DOMove(targetPosition, _dotSettings.DropDownMovementDuration)
-                .OnComplete(() => _currentAnimationState = AnimationState.Idle);
+            _dropTween = transform.DOMove(targetPosition, _dotSettings.DropDownMovementDuration);
+            _dropTween.onComplete += () => _currentAnimationState = AnimationState.Idle;
+            _dropTween.onComplete += PlayBounceAnimation;
+        }
+
+        public void PlaySpawnAnimation()
+        {
+            var t = transform;
+            var initScale = t.localScale;
+            t.localScale = Vector3.zero;
+            _spawnAnimationTween = t.DOScale(initScale, _dotSettings.SpawnAnimationDuration);
+        }
+
+        public void PlayPopAnimation()
+        {
+            _popAnimationTween = transform.DOPunchScale(Vector3.one * _dotSettings.PopOnMergeStrength,
+                _dotSettings.PopOnMergeDuration);
+        }
+
+        private void OnDisable()
+        {
+            KilLAllTween();
+        }
+
+        private void KilLAllTween()
+        {
+            foreach (var tween in _allTweenList)
+            {
+                tween.Kill(true);
+            }
         }
     }
 }

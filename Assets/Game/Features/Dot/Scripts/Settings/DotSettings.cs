@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Game.Features.Dot.Scripts.Dot;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Game.Features.Dot.Scripts.Settings
 {
@@ -17,14 +16,32 @@ namespace Game.Features.Dot.Scripts.Settings
         public float ScaleDuration => scaleDuration;
         public float ScaleAmount => scaleAmount;
         public float MergeMovementDuration => mergeMovementDuration;
-
         public float DropDownMovementDuration => dropDownMovementDuration;
+        public float BouncePower => bouncePower;
+        public float BounceTotalDuration => bounceTotalDuration;
+        public float SpawnAnimationDuration => spawnAnimationDuration;
+        public float PopOnMergeDuration => popOnMergeDuration;
+        public float PopOnMergeStrength => popOnMergeStrength;
 
-        [Header("Animation Parameters")] 
+        [Header("Scale Animation")] 
         [SerializeField] private float scaleDuration;
         [SerializeField] private float scaleAmount;
+        
+        [Header("Merge Animation")] 
         [SerializeField] private float mergeMovementDuration;
+        [Header("Drop Down Animation")] 
         [SerializeField] private float dropDownMovementDuration;
+        
+        [Header("Bounce Animation")] 
+        [SerializeField] private float bouncePower;
+        [SerializeField] private float bounceTotalDuration;
+        
+        [Header("Spawn Animation")] 
+        [SerializeField] private float spawnAnimationDuration;
+
+        [Header("Pop On Merge Animation")]
+        [SerializeField] private float popOnMergeDuration;
+        [SerializeField] private float popOnMergeStrength;
         
         [Header("Others")]
         [SerializeField] private List<Color> dotColorPalette;

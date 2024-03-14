@@ -12,6 +12,7 @@ namespace Game.Features.Dot.Scripts.Systems
         private readonly SignalBus _signalBus;
         private readonly DotSettings _dotSettings;
         private DotEntity[] _selectedDotEntities;
+        private DotEntity _dotEntityToMerge;
         private int _baseValue;
 
         public DotMergeController(SignalBus signalBus, DotSettings dotSettings)
@@ -54,6 +55,7 @@ namespace Game.Features.Dot.Scripts.Systems
         private void MergeAllDotsToLastDot()
         {
             var lastSelectedDotEntity = _selectedDotEntities[^1];
+            _dotEntityToMerge = lastSelectedDotEntity;
             lastSelectedDotEntity.SetValue(CalculateFinalValue());
             for (var i = 0; i < _selectedDotEntities.Length - 1; i++)
             {
@@ -71,7 +73,15 @@ namespace Game.Features.Dot.Scripts.Systems
         private void FireMergeCompleteSignal()
         {
             _signalBus.Fire<MergeCompleteSignal>();
+            TryPopLastDotEntity();
             _selectedDotEntities = null;
+        }
+
+        private void TryPopLastDotEntity()
+        {
+            if (!_dotEntityToMerge) return;
+            _dotEntityToMerge.PlayPopAnimation();
+            _dotEntityToMerge = null;
         }
 
         private void SaveSelectedDots(SelectedDotListChangedSignal signal)

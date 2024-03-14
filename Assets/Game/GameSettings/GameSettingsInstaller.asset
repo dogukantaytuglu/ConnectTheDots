@@ -25,8 +25,13 @@ MonoBehaviour:
   dotSettings:
     scaleDuration: 0.07
     scaleAmount: 1.1
-    mergeMovementDuration: 0.07
-    dropDownMovementDuration: 0.25
+    mergeMovementDuration: 0.06
+    dropDownMovementDuration: 0.12
+    bouncePower: 0.06
+    bounceTotalDuration: 0.055
+    spawnAnimationDuration: 0.2
+    popOnMergeDuration: 0.1
+    popOnMergeStrength: 0.1
     dotColorPalette:
     - {r: 0.9058824, g: 0.4039216, b: 0.5568628, a: 1}
     - {r: 0.882353, g: 0.34509805, b: 0.23137257, a: 1}

@@ -30,6 +30,7 @@ namespace Game.Features.Dot.Scripts.Dot
 
         public void Initialize(int dotValue, GridCellEntity gridCellEntity)
         {
+            _dotAnimationHandler.PlaySpawnAnimation();
             _occupiedGridCellEntity = gridCellEntity;
             SetValue(dotValue);
             SetNameWithCoordinate(_occupiedGridCellEntity.GridCoordinates);
@@ -63,7 +64,7 @@ namespace Game.Features.Dot.Scripts.Dot
             var targetPosition = dotEntity.transform.position;
             targetPosition.z += 1;
             _dotAnimationHandler.ScaleDown();
-            _dotAnimationHandler.MoveToMergePosition(targetPosition).OnComplete(Despawn);
+            _dotAnimationHandler.MoveToMergePosition(targetPosition, Despawn);
         }
 
         private void Despawn()
@@ -89,6 +90,11 @@ namespace Game.Features.Dot.Scripts.Dot
             _occupiedGridCellEntity = gridCellEntity;
             _occupiedGridCellEntity.RegisterDot(this);
             _dotAnimationHandler.MoveToDropPosition(gridCellEntity.transform.position);
+        }
+
+        public void PlayPopAnimation()
+        {
+            _dotAnimationHandler.PlayPopAnimation();
         }
     }
 }
