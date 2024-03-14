@@ -25,43 +25,63 @@ namespace Game.Features.Input.Scripts.Systems
             _signalBus.Subscribe<MergeCompleteSignal>(EnableInteraction);
         }
 
-        private void EnableInteraction()
-        {
-            _canInteract = true;
-        }
-
         public void Tick()
         {
             if (!_canInteract) return;
             
             if (UnityEngine.Input.GetMouseButtonDown(0))
             {
-                var mousePosition = UnityEngine.Input.mousePosition;
-                _signalBus.Fire(new InputFingerDownSignal(mousePosition));
-                _lastDragPosition = mousePosition;
+                HandleMouseButtonDown();
             }
 
             if (UnityEngine.Input.GetMouseButton(0))
             {
-                var mousePosition = UnityEngine.Input.mousePosition;
-                var distance = Vector3.Distance(mousePosition, _lastDragPosition);
-                if (distance > _inputSettings.MinDragThreshold)
-                {
-                    _lastDragPosition = mousePosition;
-                    _signalBus.Fire(new InputFingerSignal(mousePosition));
-                }
+                HandleMouseButton();
             }
 
             if (UnityEngine.Input.GetMouseButtonUp(0))
             {
-                _canInteract = false;
-                _signalBus.Fire<InputFingerUpSignal>();
+                HandleMouseButtonUp();
             }
+        }
+
+        private void HandleMouseButtonUp()
+        {
+            DisableInteraction();
+            _signalBus.Fire<InputFingerUpSignal>();
+        }
+
+        private void HandleMouseButton()
+        {
+            var mousePosition = UnityEngine.Input.mousePosition;
+            var distance = Vector3.Distance(mousePosition, _lastDragPosition);
+            if (distance > _inputSettings.MinDragThreshold)
+            {
+                _lastDragPosition = mousePosition;
+                _signalBus.Fire(new InputFingerSignal(mousePosition));
+            }
+        }
+
+        private void HandleMouseButtonDown()
+        {
+            var mousePosition = UnityEngine.Input.mousePosition;
+            _signalBus.Fire(new InputFingerDownSignal(mousePosition));
+            _lastDragPosition = mousePosition;
         }
 
         public void Dispose()
         {
             _signalBus.Unsubscribe<MergeCompleteSignal>(EnableInteraction);
+        }
+        
+        private void EnableInteraction()
+        {
+            _canInteract = true;
+        }
+
+        private void DisableInteraction()
+        {
+            _canInteract = false;
         }
     }
 }
