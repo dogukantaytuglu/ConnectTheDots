@@ -8,7 +8,6 @@ namespace Game.Installer
     {
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<GameManager>().AsSingle().NonLazy();
             SignalBusInstaller.Install(Container);
         }
     }
