@@ -13,7 +13,7 @@ namespace Game.Features.Input.Scripts.Systems
         private readonly InputSettings _inputSettings;
         private Vector3 _lastDragPosition;
         private bool _canInteract = true;
-        private float _debugTimeScale = 0.2f;
+        private readonly float _debugTimeScale = 0.2f;
 
         public PlayerInputSystem(SignalBus signalBus, InputSettings inputSettings)
         {
@@ -23,7 +23,7 @@ namespace Game.Features.Input.Scripts.Systems
 
         public void Initialize()
         {
-            _signalBus.Subscribe<MergeCompleteSignal>(EnableInteraction);
+            _signalBus.Subscribe<DotDropCompleteSignal>(EnableInteraction);
         }
 
         public void Tick()
@@ -92,7 +92,7 @@ namespace Game.Features.Input.Scripts.Systems
 
         public void Dispose()
         {
-            _signalBus.Unsubscribe<MergeCompleteSignal>(EnableInteraction);
+            _signalBus.Unsubscribe<DotDropCompleteSignal>(EnableInteraction);
         }
         
         private void EnableInteraction()
