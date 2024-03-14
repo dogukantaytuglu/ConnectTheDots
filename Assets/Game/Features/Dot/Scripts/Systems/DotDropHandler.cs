@@ -35,6 +35,12 @@ namespace Game.Features.Dot.Scripts.Systems
         private void StartDotDropSequence()
         {
             PopulateEmptyCellBuffer();
+            
+            if (_emptyCellBuffer.Count < 1)
+            {
+                FireDotDropCompleteSignal();
+                return;
+            }
 
             foreach (var gridCellEntity in _emptyCellBuffer)
             {
