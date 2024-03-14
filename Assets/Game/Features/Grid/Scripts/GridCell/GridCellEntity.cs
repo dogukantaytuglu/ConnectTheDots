@@ -8,7 +8,6 @@ namespace Game.Features.Grid.Scripts.GridCell
 {
     public class GridCellEntity : MonoBehaviour
     {
-        public bool IsGridCellFree => _registeredDot == null;
         public Vector2 GridCoordinates => _gridCoordinates;
         public DotEntity RegisteredDotEntity => _registeredDot;
         
@@ -56,11 +55,13 @@ namespace Game.Features.Grid.Scripts.GridCell
 
         public void RegisterDot(DotEntity dotToRegister)
         {
+            _gridController.RemoveCellFromFreeList(this);
             _registeredDot = dotToRegister;
         }
 
         public void DeregisterDot()
         {
+            _gridController.AddCellToFreeList(this);
             _registeredDot = null;
         }
     }

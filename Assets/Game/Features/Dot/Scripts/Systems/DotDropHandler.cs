@@ -36,10 +36,10 @@ namespace Game.Features.Dot.Scripts.Systems
         {
             PopulateEmptyCellBuffer();
 
-            foreach (var emptyCell in _emptyCellBuffer)
+            foreach (var gridCellEntity in _emptyCellBuffer)
             {
-                if (!emptyCell.IsGridCellFree) continue;
-                DropDotsToEmptyCellsFromTop(emptyCell);
+                if (!_gridController.IsGridCellFree(gridCellEntity)) continue;
+                DropDotsToEmptyCellsFromTop(gridCellEntity);
             }
         }
         
@@ -48,7 +48,7 @@ namespace Game.Features.Dot.Scripts.Systems
             _emptyCellBuffer.Clear();
             foreach (var gridCellEntity in _gridController.AllGridCells)
             {
-                if (gridCellEntity.IsGridCellFree)
+                if (_gridController.IsGridCellFree(gridCellEntity))
                 {
                     _emptyCellBuffer.Add(gridCellEntity);
                 }
@@ -70,7 +70,7 @@ namespace Game.Features.Dot.Scripts.Systems
                     continue;
                 }
 
-                if (gridCellOnTop.IsGridCellFree)
+                if (_gridController.IsGridCellFree(gridCellOnTop))
                 {
                     targetCoordinate.y++;
                     continue;
