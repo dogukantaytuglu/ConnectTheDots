@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Game.Features.Dot.Scripts.Settings;
 using TMPro;
 using UnityEngine;

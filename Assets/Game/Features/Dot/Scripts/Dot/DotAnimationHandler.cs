@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using DG.Tweening;
 using Game.Features.Dot.Scripts.Settings;
+using TMPro;
 using UnityEngine;
 using Zenject;
 
@@ -15,6 +16,8 @@ namespace Game.Features.Dot.Scripts.Dot
     public class DotAnimationHandler : MonoBehaviour
     {
         [SerializeField] private Transform visualChildTransform;
+        [SerializeField] private TextMeshPro valueText;
+        
         private DotSettings _dotSettings;
         private AnimationState _currentAnimationState = AnimationState.Idle;
         private readonly List<Tween> _allTweenList = new();
@@ -60,7 +63,9 @@ namespace Game.Features.Dot.Scripts.Dot
         {
             KilLAllTween();
             _currentAnimationState = AnimationState.Moving;
-            _moveToMergePositionTween = transform.DOMove(targetPosition, _dotSettings.MergeMovementDuration);
+            var duration = _dotSettings.MergeMovementDuration;
+            _moveToMergePositionTween = transform.DOMove(targetPosition, duration);
+            FadeTextAnimationTo(0f, duration - duration * 0.5f);
 
             if (onCompleteAction != null) 
                 _moveToMergePositionTween.onComplete += onCompleteAction;
@@ -90,16 +95,24 @@ namespace Game.Features.Dot.Scripts.Dot
 
         public void PlaySpawnAnimation()
         {
+            FadeTextAnimationTo(0,0);
             var t = transform;
             var initScale = t.localScale;
             t.localScale = Vector3.zero;
-            _spawnAnimationTween = t.DOScale(initScale, _dotSettings.SpawnAnimationDuration);
+            var duration = _dotSettings.SpawnAnimationDuration;
+            _spawnAnimationTween = t.DOScale(initScale, duration);
+            FadeTextAnimationTo(1, duration - duration * 0.2f);
         }
 
         public void PlayPopAnimation()
         {
             _popAnimationTween = transform.DOPunchScale(Vector3.one * _dotSettings.PopOnMergeStrength,
                 _dotSettings.PopOnMergeDuration);
+        }
+
+        private void FadeTextAnimationTo(float value, float duration)
+        {
+            valueText.DOFade(value, duration);
         }
 
         private void OnDisable()
