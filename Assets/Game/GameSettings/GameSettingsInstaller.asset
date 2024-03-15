@@ -15,8 +15,8 @@ MonoBehaviour:
   gridSettings:
     horizontalGridSize: 5
     verticalGridSize: 5
-    horizontalSpaceBetweenCells: 0.1
-    verticalSpaceBetweenCells: 0.1
+    horizontalSpaceBetweenCells: 0.05
+    verticalSpaceBetweenCells: 0.05
     cellScale: 0.8
     topMargin: 0
     parentName: Cells
@@ -43,7 +43,7 @@ MonoBehaviour:
     - {r: 0.42352945, g: 0.57254905, b: 0.85098046, a: 1}
     - {r: 0.8196079, g: 0.5686275, b: 0.8078432, a: 1}
     - {r: 0.6039216, g: 0.43137258, b: 0.81568635, a: 1}
-    starterValues: 020000000400000008000000
+    starterValues: 02000000040000000800000010000000
     dotPrefab: {fileID: 7276209561937100891, guid: 4a0198b5da9efd14e9e12194766133bc, type: 3}
     dotVisualRingActivationThreshold: 1024
     spawnParentName: Dots
