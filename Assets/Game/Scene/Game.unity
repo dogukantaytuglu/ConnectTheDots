@@ -813,7 +813,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8972605582272233288, guid: aa0563bc71d8a3e4488aba58b3efde95, type: 3}
       propertyPath: m_MaskAlphaCutoff
-      value: 1
+      value: 0.641
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa0563bc71d8a3e4488aba58b3efde95, type: 3}
