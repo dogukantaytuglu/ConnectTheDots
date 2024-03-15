@@ -14,6 +14,7 @@ namespace Game.Features.Dot.Scripts.Systems
         private DotEntity[] _selectedDotEntities;
         private DotEntity _dotEntityToMerge;
         private readonly DotSelectionHandler _dotSelectionHandler;
+        private int _mergeTotalValue;
 
         public DotMergeController(SignalBus signalBus, DotSettings dotSettings, DotSelectionHandler dotSelectionHandler)
         {
@@ -40,6 +41,8 @@ namespace Game.Features.Dot.Scripts.Systems
             {
                 FireMergeCompleteSignal();
             }
+
+            _mergeTotalValue = 0;
         }
 
         private bool IsMergePossible()
@@ -51,7 +54,7 @@ namespace Game.Features.Dot.Scripts.Systems
         {
             var lastSelectedDotEntity = _selectedDotEntities[^1];
             _dotEntityToMerge = lastSelectedDotEntity;
-            lastSelectedDotEntity.SetValue(_dotSelectionHandler.CalculateTotalMergeValue());
+            lastSelectedDotEntity.SetValue(_mergeTotalValue);
             for (var i = 0; i < _selectedDotEntities.Length - 1; i++)
             {
                 _selectedDotEntities[i].MergeTo(lastSelectedDotEntity);
@@ -75,6 +78,7 @@ namespace Game.Features.Dot.Scripts.Systems
         private void SaveSelectedDots(SelectedDotListChangedSignal signal)
         {
             _selectedDotEntities = new DotEntity[signal.DotEntities.Length];
+            _mergeTotalValue = _dotSelectionHandler.CalculateTotalMergeValue();
             Array.Copy(signal.DotEntities, _selectedDotEntities, signal.DotEntities.Length);
         }
 

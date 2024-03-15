@@ -110,7 +110,13 @@ namespace Game.Features.Dot.Scripts.Systems
                 
         public int CalculateTotalMergeValue()
         {
-            var multiplier = _selectedDotList.Count < 4 ? 2 : 4;
+            var selectedDotListCount = _selectedDotList.Count;
+            var multiplier = selectedDotListCount switch
+            {
+                > 1 and < 4 => 2,
+                >= 4 => 4,
+                _ => 1
+            };
 
             return _baseValue * multiplier;
         }
