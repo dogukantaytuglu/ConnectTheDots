@@ -77,9 +77,10 @@ namespace Game.Features.Dot.Scripts.Dot
             _bounceAnimation = DOTween.Sequence();
             var initYScale = visualChildTransform.localScale.y;
             var initLocalYPosition = visualChildTransform.localPosition.y;
-            
-            _bounceAnimation.Append(visualChildTransform.DOScaleY(initYScale * 1 - _dotSettings.BouncePower, halfTotalDuration));
-            _bounceAnimation.Join(visualChildTransform.DOLocalMoveY(initLocalYPosition - _dotSettings.BouncePower * 0.5f, halfTotalDuration));
+
+            var randomBouncePower = Random.Range(_dotSettings.MinBouncePower, _dotSettings.MaxBouncePower);
+            _bounceAnimation.Append(visualChildTransform.DOScaleY(initYScale * 1 - randomBouncePower, halfTotalDuration));
+            _bounceAnimation.Join(visualChildTransform.DOLocalMoveY(initLocalYPosition - randomBouncePower * 0.5f, halfTotalDuration));
             _bounceAnimation.Append(visualChildTransform.DOScaleY(initYScale, halfTotalDuration));
             _bounceAnimation.Join(visualChildTransform.DOLocalMoveY(initLocalYPosition, halfTotalDuration));
         }

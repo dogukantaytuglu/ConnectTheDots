@@ -17,7 +17,10 @@ namespace Game.Features.Dot.Scripts.Settings
         public float ScaleAmount => scaleAmount;
         public float MergeMovementDuration => mergeMovementDuration;
         public float DropDownMovementDuration => dropDownMovementDuration;
-        public float BouncePower => bouncePower;
+
+        public float MinBouncePower => minBouncePower;
+
+        public float MaxBouncePower => maxBouncePower;
         public float BounceTotalDuration => bounceTotalDuration;
         public float SpawnAnimationDuration => spawnAnimationDuration;
         public float PopOnMergeDuration => popOnMergeDuration;
@@ -31,9 +34,10 @@ namespace Game.Features.Dot.Scripts.Settings
         [SerializeField] private float mergeMovementDuration;
         [Header("Drop Down Animation")] 
         [SerializeField] private float dropDownMovementDuration;
-        
+
         [Header("Bounce Animation")] 
-        [SerializeField] private float bouncePower;
+        [SerializeField] private float minBouncePower;
+        [SerializeField] private float maxBouncePower;
         [SerializeField] private float bounceTotalDuration;
         
         [Header("Spawn Animation")] 

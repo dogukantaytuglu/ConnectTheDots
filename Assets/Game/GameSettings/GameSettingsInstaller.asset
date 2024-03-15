@@ -27,8 +27,9 @@ MonoBehaviour:
     scaleAmount: 1.09
     mergeMovementDuration: 0.25
     dropDownMovementDuration: 0.12
-    bouncePower: 0.18
-    bounceTotalDuration: 0.08
+    minBouncePower: 0.15
+    maxBouncePower: 0.2
+    bounceTotalDuration: 0.1
     spawnAnimationDuration: 0.2
     popOnMergeDuration: 0.2
     popOnMergeStrength: 0.35
@@ -43,7 +44,7 @@ MonoBehaviour:
     - {r: 0.42352945, g: 0.57254905, b: 0.85098046, a: 1}
     - {r: 0.8196079, g: 0.5686275, b: 0.8078432, a: 1}
     - {r: 0.6039216, g: 0.43137258, b: 0.81568635, a: 1}
-    starterValues: 02000000040000000800000010000000
+    starterValues: 02000000020000000200000004000000040000000800000010000000
     dotPrefab: {fileID: 7276209561937100891, guid: 4a0198b5da9efd14e9e12194766133bc, type: 3}
     dotVisualRingActivationThreshold: 1024
     spawnParentName: Dots
