@@ -715,6 +715,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8489723}
     m_Modifications:
+    - target: {fileID: 51177811063865473, guid: aa0563bc71d8a3e4488aba58b3efde95, type: 3}
+      propertyPath: m_fontSize
+      value: 5.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 51177811063865473, guid: aa0563bc71d8a3e4488aba58b3efde95, type: 3}
+      propertyPath: m_fontSizeMin
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4036913995335657761, guid: aa0563bc71d8a3e4488aba58b3efde95, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
