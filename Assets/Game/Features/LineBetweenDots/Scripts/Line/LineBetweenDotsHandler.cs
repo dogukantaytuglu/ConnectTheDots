@@ -45,7 +45,7 @@ namespace Game.Features.LineBetweenDots.Scripts.Line
             for (var i = 0; i < dotEntities.Length; i++)
             {
                 var dotEntity = dotEntities[i];
-                lineRenderer.SetPosition(i, dotEntity.LineBetweenDotsRoutePoint);
+                lineRenderer.SetPosition(i, dotEntity.transform.position);
             }
     
         }

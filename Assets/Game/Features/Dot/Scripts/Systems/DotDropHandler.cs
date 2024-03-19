@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using DG.Tweening;
+using Game.Features.Dot.Scripts.Dot;
 using Game.Features.Dot.Scripts.Settings;
 using Game.Features.Dot.Scripts.Signals;
 using Game.Features.Grid.Scripts.GridCell;
@@ -85,7 +86,8 @@ namespace Game.Features.Dot.Scripts.Systems
                 var gridToDropDownCoordinate = targetCoordinate;
                 gridToDropDownCoordinate.y -= spaceToDrop;
                 var gridToDropDown = _gridController.GridCellByCoordinateDictionary[gridToDropDownCoordinate];
-                gridCellOnTop.RegisteredDotEntity.DropDownTo(gridToDropDown);
+                var dotEntity = (DotEntity)gridCellOnTop.RegisteredOccupier;
+                dotEntity.DropDownTo(gridToDropDown);
                 targetCoordinate.y++;
             }
 

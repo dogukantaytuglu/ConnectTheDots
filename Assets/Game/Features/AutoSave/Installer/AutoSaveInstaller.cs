@@ -8,5 +8,6 @@ public class AutoSaveInstaller : ScriptableObjectInstaller<AutoSaveInstaller>
     public override void InstallBindings()
     {
         Container.BindInterfacesAndSelfTo<AutoSaveSystem>().AsSingle().NonLazy();
+        Container.BindInterfacesAndSelfTo<LoadGameSystem>().AsSingle().NonLazy();
     }
 }

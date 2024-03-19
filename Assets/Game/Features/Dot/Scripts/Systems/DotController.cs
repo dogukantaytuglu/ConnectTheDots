@@ -12,17 +12,17 @@ namespace Game.Features.Dot.Scripts.Systems
 
         private readonly Dictionary<Transform, DotEntity> _dotEntityTransformDictionary = new();
         private readonly HashSet<DotEntity> _allDotEntities = new();
-        private readonly AutoSaveSystem _autoSaveSystem;
+        private readonly LoadGameSystem _loadGameSystem;
 
-        public DotController(DotSpawner dotSpawner, AutoSaveSystem autoSaveSystem)
+        public DotController(DotSpawner dotSpawner, LoadGameSystem loadGameSystem)
         {
             _dotSpawner = dotSpawner;
-            _autoSaveSystem = autoSaveSystem;
+            _loadGameSystem = loadGameSystem;
         }
         
         public void Initialize()
         {
-            if (_autoSaveSystem.TryLoadGame(out var saveGameData))
+            if (_loadGameSystem.TryLoadGame(out var saveGameData))
             {
                 _dotSpawner.PopulateGridWithSaveGameData(saveGameData);
             }
@@ -69,13 +69,26 @@ namespace Game.Features.Dot.Scripts.Systems
         
         public bool IsNeighbourDot(DotEntity originDot, DotEntity dotToCheck)
         {
-            var originCoordinate = originDot.DotCoordinate;
-            var coordinateToCheck = dotToCheck.DotCoordinate;
+            var originCoordinate = originDot.CoordinateOnGrid;
+            var coordinateToCheck = dotToCheck.CoordinateOnGrid;
 
             var deltaX = Mathf.Abs(originCoordinate.x - coordinateToCheck.x);
             var deltaY = Mathf.Abs(originCoordinate.y - coordinateToCheck.y);
 
             return deltaX <= 1 && deltaY <= 1;
+        }
+
+        public DotEntity[] GetAllDotEntities()
+        {
+            var allEntitiesArray = new DotEntity[_allDotEntities.Count];
+            var index = 0;
+            foreach (var dotEntity in _allDotEntities)
+            {
+                allEntitiesArray[index] = dotEntity;
+                index++;
+            }
+
+            return allEntitiesArray;
         }
     }
 }

@@ -1,17 +1,15 @@
-using DG.Tweening;
-using Game.Features.Dot.Scripts.Interfaces;
 using Game.Features.Dot.Scripts.Systems;
 using Game.Features.Grid.Scripts.GridCell;
+using Game.Features.Grid.Scripts.Interfaces;
 using UnityEngine;
 using Zenject;
 
 namespace Game.Features.Dot.Scripts.Dot
 {
-    public class DotEntity : MonoBehaviour, ILineBetweenDotsRoutePoint, IPoolable<IMemoryPool>
+    public class DotEntity : MonoBehaviour, IGridSpaceOccupier, IPoolable<IMemoryPool>
     {
         public int Value { get; private set; }
-        public Vector2 DotCoordinate => _occupiedGridCellEntity.GridCoordinates;
-        public Vector3 LineBetweenDotsRoutePoint => _occupiedGridCellEntity.transform.position;
+        public Vector2 CoordinateOnGrid { get; set; }
         public Color Color => _dotVisualHandler.Color;
 
         private DotVisualHandler _dotVisualHandler;
@@ -96,5 +94,6 @@ namespace Game.Features.Dot.Scripts.Dot
         {
             _dotAnimationHandler.PlayPopAnimation();
         }
+
     }
 }

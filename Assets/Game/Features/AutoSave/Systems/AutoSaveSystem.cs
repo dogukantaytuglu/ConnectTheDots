@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Game.Features.AutoSave.Data;
 using Game.Features.Dot.Scripts.Signals;
-using Game.Features.Grid.Scripts.Systems;
+using Game.Features.Dot.Scripts.Systems;
 using UnityEngine;
 using Zenject;
 
@@ -10,15 +10,15 @@ namespace Game.Features.AutoSave.Systems
 {
     public class AutoSaveSystem : IInitializable, IDisposable
     {
-        private readonly string SaveGameKey = "SAVE_GAME_DATA";
         private readonly SignalBus _signalBus;
-        private readonly GridController _gridController;
+        private readonly DotController _dotController;
         private readonly AutoSaveSystem _autoSaveSystem;
+        private static string GridSaveDataKey => AutoSaveKeys.GridSaveDataKey;
 
-        public AutoSaveSystem(SignalBus signalBus, GridController gridController)
+        public AutoSaveSystem(SignalBus signalBus, DotController dotController)
         {
             _signalBus = signalBus;
-            _gridController = gridController;
+            _dotController = dotController;
         }
         
         public void Initialize()
@@ -29,11 +29,12 @@ namespace Game.Features.AutoSave.Systems
         private void SaveGame()
         {
             var dataList = new List<GridSaveData>();
-            
-            foreach (var gridCellEntity in _gridController.AllGridCells)
+
+            var allDotEntities = _dotController.GetAllDotEntities();
+            foreach (var dotEntity in allDotEntities)
             {
-                var gridSaveData = new GridSaveData(gridCellEntity.GridCoordinates,
-                    gridCellEntity.RegisteredDotEntity.Value);
+                var gridSaveData = new GridSaveData(dotEntity.CoordinateOnGrid,
+                    dotEntity.Value);
                 
                 dataList.Add(gridSaveData);
             }
@@ -41,17 +42,7 @@ namespace Game.Features.AutoSave.Systems
             var saveGameData = new SaveGameData(dataList);
 
             var json = JsonUtility.ToJson(saveGameData);
-            PlayerPrefs.SetString(SaveGameKey, json);
-        }
-
-        public bool TryLoadGame(out SaveGameData saveGameData)
-        {
-            saveGameData = null;
-            if (!PlayerPrefs.HasKey(SaveGameKey)) return false;
-
-            var json = PlayerPrefs.GetString(SaveGameKey);
-            saveGameData = JsonUtility.FromJson<SaveGameData>(json);
-            return true;
+            PlayerPrefs.SetString(GridSaveDataKey, json);
         }
 
         public void Dispose()

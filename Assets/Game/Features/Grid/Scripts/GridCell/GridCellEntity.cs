@@ -1,4 +1,4 @@
-using Game.Features.Dot.Scripts.Dot;
+using Game.Features.Grid.Scripts.Interfaces;
 using Game.Features.Grid.Scripts.Settings;
 using Game.Features.Grid.Scripts.Systems;
 using UnityEngine;
@@ -8,15 +8,13 @@ namespace Game.Features.Grid.Scripts.GridCell
 {
     public class GridCellEntity : MonoBehaviour
     {
-        public Vector2 GridCoordinates => _gridCoordinates;
-        public DotEntity RegisteredDotEntity => _registeredDot;
-        
+        public Vector2 GridCoordinates { get; private set; }
+        public IGridSpaceOccupier RegisteredOccupier { get; private set; }
+
         private GridCellDebugView _debugView;
         private GridController _gridController;
         private GridSettings _gridSettings;
         private bool _isDebugViewActive;
-        private Vector2 _gridCoordinates = Vector2.zero;
-        private DotEntity _registeredDot;
 
         [Inject]
         public void Construct(GridSettings gridSettings, GridCellDebugView gridCellDebugView, GridController gridController)
@@ -46,23 +44,23 @@ namespace Game.Features.Grid.Scripts.GridCell
 
         private void SetGridCoordinates(Vector2 coordinates)
         {
-            _gridCoordinates.x = coordinates.x;
-            _gridCoordinates.y = coordinates.y;
+            GridCoordinates = coordinates;
 
-            gameObject.name = $"GridCell: {_gridCoordinates}";
-            _debugView.Initialize(_isDebugViewActive, _gridCoordinates);
+            gameObject.name = $"GridCell: {GridCoordinates}";
+            _debugView.Initialize(_isDebugViewActive, GridCoordinates);
         }
 
-        public void RegisterDot(DotEntity dotToRegister)
+        public void RegisterDot(IGridSpaceOccupier occupierToRegister)
         {
             _gridController.RemoveCellFromFreeList(this);
-            _registeredDot = dotToRegister;
+            RegisteredOccupier = occupierToRegister;
+            occupierToRegister.CoordinateOnGrid = GridCoordinates;
         }
 
         public void DeregisterDot()
         {
             _gridController.AddCellToFreeList(this);
-            _registeredDot = null;
+            RegisteredOccupier = null;
         }
     }
 }
