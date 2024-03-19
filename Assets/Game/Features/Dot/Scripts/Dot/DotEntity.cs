@@ -33,7 +33,7 @@ namespace Game.Features.Dot.Scripts.Dot
             SetValue(dotValue);
             SetNameWithCoordinate(_occupiedGridCellEntity.GridCoordinates);
             _dotController.RegisterDotEntity(this);
-            _occupiedGridCellEntity.RegisterDot(this);
+            _occupiedGridCellEntity.RegisterOccupier(this);
         }
 
         public void SetValue(int value)
@@ -68,7 +68,7 @@ namespace Game.Features.Dot.Scripts.Dot
         private void Despawn()
         {
             _pool.Despawn(this);
-            _occupiedGridCellEntity.DeregisterDot();
+            _occupiedGridCellEntity.DeregisterOccupier();
         }
 
         public void OnDespawned()
@@ -84,9 +84,9 @@ namespace Game.Features.Dot.Scripts.Dot
 
         public void DropDownTo(GridCellEntity gridCellEntity)
         {
-            _occupiedGridCellEntity.DeregisterDot();
+            _occupiedGridCellEntity.DeregisterOccupier();
             _occupiedGridCellEntity = gridCellEntity;
-            _occupiedGridCellEntity.RegisterDot(this);
+            _occupiedGridCellEntity.RegisterOccupier(this);
             _dotAnimationHandler.MoveToDropPosition(gridCellEntity.transform.position);
         }
 

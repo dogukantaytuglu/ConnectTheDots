@@ -1,4 +1,3 @@
-using Game.Features.Dot.Scripts.Systems;
 using Game.Features.Grid.Scripts.GridCell;
 using Game.Features.Grid.Scripts.Settings;
 using Game.Features.Grid.Scripts.Systems;
@@ -15,7 +14,6 @@ namespace Game.Features.Grid.Scripts.Installer
         {
             Container.BindInterfacesAndSelfTo<GridGenerator>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<GridController>().AsSingle().NonLazy();
-            Container.BindInterfacesAndSelfTo<DotDropHandler>().AsSingle().NonLazy();
             
             Container.BindFactory<GridCellEntity, GridCellFactory>()
                 .FromSubContainerResolve()

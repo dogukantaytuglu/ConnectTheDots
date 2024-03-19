@@ -50,14 +50,14 @@ namespace Game.Features.Grid.Scripts.GridCell
             _debugView.Initialize(_isDebugViewActive, GridCoordinates);
         }
 
-        public void RegisterDot(IGridSpaceOccupier occupierToRegister)
+        public void RegisterOccupier(IGridSpaceOccupier occupierToRegister)
         {
             _gridController.RemoveCellFromFreeList(this);
             RegisteredOccupier = occupierToRegister;
             occupierToRegister.CoordinateOnGrid = GridCoordinates;
         }
 
-        public void DeregisterDot()
+        public void DeregisterOccupier()
         {
             _gridController.AddCellToFreeList(this);
             RegisteredOccupier = null;
