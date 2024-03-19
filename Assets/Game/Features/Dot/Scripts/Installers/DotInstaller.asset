@@ -12,3 +12,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1135f170ecfa1ef47b63aadde4c23962, type: 3}
   m_Name: DotInstaller
   m_EditorClassIdentifier: 
+  dotSettings:
+    scaleDuration: 0.07
+    scaleAmount: 1.09
+    mergeMovementDuration: 0.22
+    dropDownMovementDuration: 0.12
+    minBouncePower: 0.08
+    maxBouncePower: 0.14
+    bounceTotalDuration: 0.14
+    spawnAnimationDuration: 0.2
+    popOnMergeDuration: 0.2
+    popOnMergeStrength: 0.35
+    dotColorPalette:
+    - {r: 0.9058824, g: 0.4039216, b: 0.5568628, a: 1}
+    - {r: 0.882353, g: 0.34509805, b: 0.23137257, a: 1}
+    - {r: 0.9960785, g: 0.73333335, b: 0.18431373, a: 1}
+    - {r: 0.8980393, g: 0.5058824, b: 0.23137257, a: 1}
+    - {r: 0.45098042, g: 0.7960785, b: 0.31764707, a: 1}
+    - {r: 0.30588236, g: 0.8196079, b: 0.64705884, a: 1}
+    - {r: 0.40784317, g: 0.7411765, b: 0.91372555, a: 1}
+    - {r: 0.42352945, g: 0.57254905, b: 0.85098046, a: 1}
+    - {r: 0.8196079, g: 0.5686275, b: 0.8078432, a: 1}
+    - {r: 0.6039216, g: 0.43137258, b: 0.81568635, a: 1}
+    starterValues: 02000000020000000200000004000000040000000800000010000000
+    dotPrefab: {fileID: 7276209561937100891, guid: 4a0198b5da9efd14e9e12194766133bc, type: 3}
+    dotVisualRingActivationThreshold: 1024
+    spawnParentName: Dots

@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aa5f031d05097e46abaa24ffbec0328, type: 3}
   m_Name: InputSystemInstaller
   m_EditorClassIdentifier: 
+  inputSettings:
+    minDragThreshold: 35

@@ -12,4 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73c05c01b98ea00498da04f4353fa5c3, type: 3}
   m_Name: GridInstaller
   m_EditorClassIdentifier: 
-  gridCellEntityPrefab: {fileID: 5645460284282004067, guid: 6e38186cb36d2c842ab9e31449596cbe, type: 3}
+  settings:
+    horizontalGridSize: 5
+    verticalGridSize: 5
+    horizontalSpaceBetweenCells: 0.05
+    verticalSpaceBetweenCells: 0.05
+    cellScale: 0.8
+    topMargin: 0
+    parentName: Cells
+    gridCellEntityPrefab: {fileID: 5645460284282004067, guid: 6e38186cb36d2c842ab9e31449596cbe, type: 3}
+    isDebugViewActive: 0

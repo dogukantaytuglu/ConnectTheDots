@@ -1,17 +1,20 @@
 using Game.Features.LineBetweenDots.Scripts.Line;
 using Game.Features.LineBetweenDots.Scripts.Settings;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
 [CreateAssetMenu(fileName = "LineBetweenDotsInstaller", menuName = "Installers/LineBetweenDotsInstaller")]
 public class LineBetweenDotsInstaller : ScriptableObjectInstaller<LineBetweenDotsInstaller>
 {
-    [Inject] private LineBetweenDotsSettings _lineBetweenDotsSettings;
+    [SerializeField] private LineBetweenDotsSettings lineBetweenDotsSettings;
     public override void InstallBindings()
     {
+        Container.BindInstance(lineBetweenDotsSettings);
+
         Container.BindInterfacesAndSelfTo<LineBetweenDotsHandler>()
             .FromSubContainerResolve()
-            .ByNewPrefabInstaller<LineHandlerSubContainerInstaller>(_lineBetweenDotsSettings.LineRendererGameObject)
+            .ByNewPrefabInstaller<LineHandlerSubContainerInstaller>(lineBetweenDotsSettings.LineRendererGameObject)
             .AsSingle().NonLazy();
     }
 }
