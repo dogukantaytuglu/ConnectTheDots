@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Game.Features.Grid.Scripts.GridCell;
+using Game.Features.Grid.Scripts.Interfaces;
 using UnityEngine;
 
 namespace Game.Features.Grid.Scripts.Systems
@@ -69,6 +70,18 @@ namespace Game.Features.Grid.Scripts.Systems
 
             this.LogError($"Tried to get cell by coordinate {coordinate} but cell not found");
             return false;
+        }
+
+        public bool TryGetOccupierByType<T>(Vector2 coordinate, out T occupier) where T : IGridSpaceOccupier
+        {
+            occupier = default;
+
+            if (!TryGetGridCellByCoordinate(coordinate, out var cellEntity)) return false;
+            var registeredOccupier = cellEntity.RegisteredOccupier;
+            if (registeredOccupier is not T resultOccupier) return false;
+
+            occupier = resultOccupier;
+            return true;
         }
     }
 }
